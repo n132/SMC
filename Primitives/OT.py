@@ -22,10 +22,9 @@ class Ot(object):
     # Bellare-Micali Protocal
     def __init__(self,id) -> None:
         super().__init__()
-        
-        if(id=='S'):#Reciever
+        if(id=='Alice'):#Reciever
             self.id=0
-        elif(id=='R'):#Sender
+        elif(id=='Bob'):#Sender
             self.id=1
         else:
             exit(0)
@@ -43,7 +42,6 @@ class Ot(object):
         res.append(input())
         res.append(input())
     def Alice(self):
-
         self.connect()
         c=self.getRandom()
         self.send(c)

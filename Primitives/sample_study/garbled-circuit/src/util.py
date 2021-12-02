@@ -108,3 +108,6 @@ class PrimeGroup:
 def parse_json(json_path):
     with open(json_path) as json_file:
         return json.load(json_file)
+if __name__ == "__main__":
+    a =  PrimeGroup(4776913109852041418248056622882488319)
+    print("OK")
