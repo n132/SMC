@@ -1,7 +1,9 @@
 # n132
 #
 # 
-from Crypto.PublicKey import ECC
+from utils import *
+import gmpy2
+from Crypto.PublicKey import ECC,XOR
 from Crypto.Random  import random
 key = ECC.generate(curve='P-256')
 f = open('myprivatekey.pem','wt')
@@ -10,12 +12,10 @@ f.close()
 
 f = open('myprivatekey.pem','rt')
 key = ECC.import_key(f.read())
+def getRamdom(length):
+    return gmpy2.mpz_urandomb(gmpy2.random_state(),1024)
 
 
-def keyGen(self):
-    if(self.id==0):
-        return
-        else:
             
 
 class Ot(object):
@@ -34,30 +34,46 @@ class Ot(object):
         pass 
     def send():
         pass
-    def hash():
-        pass        
+    
     def getRandom():
         return random.getrandbits(2048)
-
+    def getSec():
+        res=[]
+        print("Give me two sec:")
+        res.append(input())
+        res.append(input())
     def Alice(self):
+
         self.connect()
         c=self.getRandom()
         self.send(c)
+        
         pks = self.recv()
         #pk=[]
         pk= getPkublicKeys(pks)
         assert(pk[0]*pk[1]==c)
-        c=[]
-        c.append(hash(pk[0]))
-        c.append(hash(pk[1]))
+        r0 = random.getrandbits()
+        r1 = random.getrandbits()
+        secret = self.getSec()
+        self.send(( (powm(g,r0,p),hash(powm(pk[0],r0,p)) ^ secret[0] )),(powm(g,r1,p),hash(powm(pk[1],r1,p)) ^ secret[0] ) ))
+
 
     def Bob(self):
-        
         self.connect()
         c = self.recv()
+
         k= self.getRandom()
-        pk1 = pow(g,k)
-        pk2 = c/pk1
-        self.send((pk1,pk2))
-        self.recv()
-        
+        print("Which secret do you like to get?")
+        b = input()
+        if(b not in [0,1]):
+            exit(0)
+        pk=[0,0]
+        pk[b] = powm(g,k,p)
+        pk[1-b] = c/pk[b]
+
+        self.send((pk[0],pk[1]))
+        data = self.recv()
+        data = data[b]
+        res = data[1] ^ hash(powm(data[0],k,p))
+        print("I get the secret:", res)
+        exit(1)
