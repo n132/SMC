@@ -11,12 +11,20 @@ import sympy
 L = 256
 PORT = 6999
 ADDR = "127.0.0.1"
-
+def n2b(n):#avoiding bad split
+    return str(n).encode("utf8")
+def pack(s,spliter=b'-'):#pack numbers
+    res= b''
+    for x in s:
+        res += n2b(x)+spliter
+    if(res==b''):
+        return res
+    return res[:-1]
 def hash(t):
     #Test Passed
     h = hashlib.new('sha512_256')
     h.update(t)
-    return h.hexdigest()
+    return h.hexdigest().encode('utf8')
 def connect():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((ADDR, PORT))
@@ -74,6 +82,7 @@ class CyclicGroup:# Cyclic group
         # ext("find_generator.")
 
 if __name__ == "__main__":
+    print(hash(b"12222222222"))
     #print(factor(4776913109852041418248056622882488319))
     # p = 4776913109852041418248056622882488319
     # a =  CyclicGroup(p)
