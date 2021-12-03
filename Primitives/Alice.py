@@ -28,8 +28,8 @@ if __name__ == '__main__':
         pks = data.split(b"-")
         pks[0] = int(pks[0])
         pks[1] = int(pks[1])
-        print(c,pks)
-        print((pks[0] * pks[1])% p)
+        #print(c,pks)
+        #print((pks[0] * pks[1])% p)
         assert(c== (pks[0] * pks[1])% p)
         sec = getSec()
         data=b""

@@ -23,12 +23,12 @@ def Bob(cmd):
         
         s.send(pack(pks))
         data = s.recv(1024).split(b"-")
-        print(data)
+        #print(data)
         b = b*2
         u = data[b]
         v = data[b+1]
         u = int(u)
-        print(v)
+        #print(v)
         v = int(v)
         res=long_to_bytes( bytes_to_long(hash(n2b(GC.pow(u,k))))  ^ v )
         s.close()
@@ -42,4 +42,4 @@ if __name__ == "__main__":
         exp = randint(0,1)
         if(exp != Bob(exp)):
             ct +=1
-    print(ct/1000)
+    print((1000-ct)/1000)
