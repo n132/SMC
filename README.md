@@ -3,9 +3,11 @@
 
 # Team2
 ## Doing
-* OT
-## Todo
 * GC
+## Todo
+* Yao
+* GMW
 ## Done
 * socket communication
 * cyclic group (generator, mul, div, pow)
+* OT

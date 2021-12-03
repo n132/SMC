@@ -1,12 +1,12 @@
 import math
 import gmpy2
-from gmpy2 import mpz
 import hashlib
 import os
 from random import randint
 import socket
 from Crypto.Util.number import *
 import sympy
+from cryptography.fernet import Fernet
 
 L = 256
 PORT = 6999
@@ -81,8 +81,18 @@ class CyclicGroup:# Cyclic group
         #         return a
         # ext("find_generator.")
 
+def encrypt(key,data):# a little not secure because iv is included in the enc
+    return Fernet(key).encrypt(data)
+def deccrypt(key,data):
+    return Fernet(key).decrypt(data)
+def kengen():
+    return Fernet.generate_key()
 if __name__ == "__main__":
-    print(hash(b"12222222222"))
+    #k = kengen()
+    k = b'qraJeM76HFYYwZuSvcy7GJ5ZddPbrcNhghN8VtPltDo='
+#    print(k)
+#    c=encrypt(k,b"1222222222222")
+#    print(deccrypt(k,c))
     #print(factor(4776913109852041418248056622882488319))
     # p = 4776913109852041418248056622882488319
     # a =  CyclicGroup(p)
