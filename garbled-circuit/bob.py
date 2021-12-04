@@ -21,20 +21,22 @@ def send_evaluation(entry):
     #print("Received:", circuit['id'])
 
     # Generate all possible inputs for both Alice and Bob
-    for bits in [format(n, 'b').zfill(N) for n in range(2**N)]:
-        bits_b = [int(b) for b in bits[N - len(b_wires):]]  # Bob's inputs
+    #for bits in [format(n, 'b').zfill(N) for n in range(2**N)]:
+        #bits_b = [int(b) for b in bits[N - len(b_wires):]]  # Bob's inputs
 
         # Create dict mapping each wire of Bob to Bob's input
-        
-        b_inputs_clear = {
-            b_wires[i]: bits_b[i]
-            for i in range(len(b_wires))
-        }
-        print("b_inputs_clear:", b_inputs_clear, bits_b)
+    bits_b = input("Bob input (format: 0 0):")
+    bits_b = [int(x) for x in bits_b.split()]
+    #print("bits_b:", bits_b)
+    b_inputs_clear = {
+        b_wires[i]: bits_b[i]
+        for i in range(len(b_wires))
+    }
+    #print("b_inputs_clear:", b_inputs_clear, bits_b)
 
-        # Evaluate and send result to Alice
-        ot_b.send_result(circuit, garbled_tables, pbits_out,
-                            b_inputs_clear)
+    # Evaluate and send result to Alice
+    ot_b.send_result(circuit, garbled_tables, pbits_out,
+                        b_inputs_clear)
 
 while True:
     try:

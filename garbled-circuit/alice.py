@@ -49,25 +49,26 @@ print(f"======== {circuit['id']} ========")
 
 # Generate all inputs for both Alice and Bob
 
+bits_a = input("Alice input (format: 0 0):")
+bits_a = [int(x) for x in bits_a.split()]
+#print("bits_a:", bits_a)
 
-for bits in [format(n, 'b').zfill(N) for n in range(2**N)]:
-    bits_a = [int(b) for b in bits[:len(a_wires)]]  # Alice's inputs
+#for bits in [format(n, 'b').zfill(N) for n in range(2**N)]:
+    #bits_a = [int(b) for b in bits[:len(a_wires)]]  # Alice's inputs
     #print(len(a_wires))
-
+    
 
     # Map Alice's wires to (key, encr_bit)
-    for i in range(len(a_wires)):
-        a_inputs[a_wires[i]] = (keys[a_wires[i]][bits_a[i]],
-                                pbits[a_wires[i]] ^ bits_a[i])
+for i in range(len(a_wires)):
+    a_inputs[a_wires[i]] = (keys[a_wires[i]][bits_a[i]],
+                            pbits[a_wires[i]] ^ bits_a[i])
 
-    # Send Alice's encrypted inputs and keys to Bob
-    result = ot_a.get_result(a_inputs, b_keys)
+# Send Alice's encrypted inputs and keys to Bob
+result = ot_a.get_result(a_inputs, b_keys)
 
-    # Format output
-    str_bits_a = ' '.join(bits[:len(a_wires)])
-    str_bits_b = ' '.join(bits[len(a_wires):])
-    str_result = ' '.join([str(result[w]) for w in outputs])
+# Format output
+str_bits_a = ' '.join([str(bits_a[a]) for a in bits_a])
+#str_bits_b = ' '.join([str(bits_b[a]) for a in bits_b])
+str_result = ' '.join([str(result[w]) for w in outputs])
 
-    print(f"  Alice{a_wires} = {str_bits_a} "
-            f"Bob{b_wires} = {str_bits_b}  "
-            f"Outputs{outputs} = {str_result}")
+print(f"Outputs{outputs} = {str_result}")
