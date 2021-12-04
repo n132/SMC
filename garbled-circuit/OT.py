@@ -54,8 +54,8 @@ class OblivousTransfer:
 
         result = yao.evaluate(circuit, g_tables, pbits_out, a_inputs, b_inputs_encr)
 
-    # sending back circuit evaluation
-    self.socket.send(result)
+        # sending back circuit evaluation
+        self.socket.send(result)
 
     def ot_garbler(self, msgs):
         # OT Alice side
@@ -73,8 +73,8 @@ class OblivousTransfer:
         c1 = G.gen_pow(k)
 
         # hash the OT key and xor with msg
-        e0 = util.xor_bytes(msg[0], self.ot_hash(G.pow(h0, k), len(msgs[0]))) 
-        e1 = util.xor_bytes(msg[1], self.ot_hash(G.pow(h1, k), len(msgs[1])))
+        e0 = util.xor_bytes(msgs[0], self.ot_hash(G.pow(h0, k), len(msgs[0]))) 
+        e1 = util.xor_bytes(msgs[1], self.ot_hash(G.pow(h1, k), len(msgs[1])))
 
         self.socket.send((c1, e0, e1))
 
@@ -98,11 +98,12 @@ class OblivousTransfer:
 
         return mb
     
-    def ot_hash(pub_key, msg_length):
+    def ot_hash(self, pub_key, msg_length):
         # hash function for OT keys
+        #print("public key:", pub_key, "msg_length:", msg_length)
         key_length = (pub_key.bit_length() + 7) // 8
         bytes = pub_key.to_bytes(key_length, byteorder="big")
-        return hashlib.shake_256(bytes).figest(msg_length)
+        return hashlib.shake_256(bytes).digest(msg_length)
 
 
 
