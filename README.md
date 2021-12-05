@@ -3,6 +3,7 @@
 
 # Team2
 ## Doing
+* OT reconstruction
 * GC
 ## Todo
 * Yao

@@ -2,12 +2,7 @@ import socket
 from utils import *
 PORT = 6999
 BigPrime = 4776913109852041418248056622882488319
-    
-
-def Bob(cmd):
-    s = socket.socket()
-    host = socket.gethostname()
-    s.connect((host, PORT))
+def OT_Bob(cmd,s):
     m= s.recv(2)
     if(m==b'Hi'):
         GC = CyclicGroup(BigPrime)
@@ -36,6 +31,13 @@ def Bob(cmd):
     else:
         s.close()
         return 2
+
+def Bob(cmd):
+    s = socket.socket()
+    host = socket.gethostname()
+    s.connect((host, PORT))
+    return OT_Bob(cmd,s)
+
 if __name__ == "__main__":
     ct = 0 
     for x in range(1000):

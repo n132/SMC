@@ -30,11 +30,13 @@ class GarbledGates(object):
                 self.keys[x][y] = kengen()
         return self.keys
     def encCircuit(self):
+        #Generate encrypted data with generated keys
         #-----------------------------------
         self.k = []
         for x in range(3):
             for y in range(2):
                 self.k[x][y] = encrypt(self.keys[x][y],str(y).encode('utf8'))
+        #Generate garbled output
         #-----------------------------------
         ptr = self.keys
         self.c=[]
@@ -44,14 +46,11 @@ class GarbledGates(object):
                 content  = self.k[2][self.gate(x,y)]
                 tmp.append( encrypt(ptr[0][x],encrypt(ptr[1][y],content)) )
             self.c.append(tmp)
+        #pack the data
         #-----------------------------------
         
         #---------------------------------------------
-        #---------------------------------------------
-        #---------------------------------------------
-        #---------------------------------------------
-        #---------------------------------------------
-        #---------------------------------------------
+
     def genGC(self):
         encCircuit()
         
