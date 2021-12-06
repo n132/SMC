@@ -134,8 +134,17 @@ def cGarble(info,labels):
         gate['garbledResult'] = res 
         gc.append(gate)
     # gc process finished.
-    return gc
-    
+    # We need to give the receiver the final output's map so he could know the result.
+    data = dict()
+    data['outmap']={
+        0: labels[info['output']*2+0],
+        1: labels[info['output']*2+1]
+    }
+    data['gc']=gc
+    return data
+    #about the input/output information:not sure now
+    #if needed, add later
+
 def gcEval():
     pass
 
