@@ -88,7 +88,6 @@ def deccrypt(key,data):
 def kengen():
     return Fernet.generate_key()
 if __name__ == "__main__":
-    #k = kengen()
     k = b'qraJeM76HFYYwZuSvcy7GJ5ZddPbrcNhghN8VtPltDo='
 #    print(k)
 #    c=encrypt(k,b"1222222222222")
