@@ -5,7 +5,9 @@ def OR(a,b):
     return a or b
 def XOR(a,b):
     return a^b
-    
+def NOT(a):
+    assert(a<=1 and a>=0)
+    return 1-a
 
 from utils import *
 class GarbledGates(object):
@@ -53,7 +55,8 @@ class GarbledGates(object):
 
     def genGC(self):
         encCircuit()
-        
+    
+
 if __name__ == "__main__":
     a= GarbledGates(1,2,3)
     for x in a.GetKeys():
