@@ -14,6 +14,7 @@ SWICT = {
     "XOR":XOR,"xor":XOR,
 }
 import json
+from operator import indexOf
 
 from sympy.polys.densetools import _rec_integrate_in
 from utils import *
@@ -155,28 +156,32 @@ def gateCalculator(w1,w2,table):
             if(res):
                 return res
         except Exception:
-            print(1)
+            pass
+    print("Fatal Exit")
     exit(1)
 def gcEval(gc,inputs,info,result_map):
     # input: gc, ilabels
     # output: circuit result bit b
     #    assert(len(input_lables)==gc[int])
+    '''
+        info
+        {'id': 0, 'type': 'XOR', 'input': [0, 2], 'output': [4]}
+        {'id': 1, 'type': 'XOR', 'input': [1, 3], 'output': [5]}
+        {'id': 2, 'type': 'or', 'input': [4, 5], 'output': [6]} 
+    '''
     assert(len(inputs) == len(info['inputs']))
     inputs+=[0]*(info['output'][0]+1-len(inputs))
     for x in gc:
         '''
-        {'id': 0, 'type': 'XOR', 'input': [0, 2], 'output': [4]}
-        {'id': 1, 'type': 'XOR', 'input': [1, 3], 'output': [5]}
-        {'id': 2, 'type': 'or', 'input': [4, 5], 'output': [6]} 
+        example:
+        {'id': 0, 'garbledResult': [b'gAAAAABhroreq5oIlH1xpSbMh3WRC0kO30A8OaJ8dMoTLaJAtLogy8MjLW0FMelBn6AAW39XvxShbr7wK1LTbWyd1wBAL1YZTN8LBj3mVkbvhshiu1Ye9-yjuf2YuvQT3ErqQkKFD92MxKUc4u_g30O0Gkq_7q_J_ah5aHOMOBSxstwU8u0xRLN_7K4XdLJecey0m9votJiJASTtrHF5iRY2thsDIABaURsxShDS1FDptHG6S6nlkprwRY7Nx3-FaZTaqG-BR6jX', b'gAAAAABhroreg94DG2-9xqd43A52imUOBgcGJgnmo0Q3PrdtzF3kSN5DikPL44bEtifvvAdInW8V_D8X_Av22Ux7p4y57hS39Z0gICencC_jdAoYwfPb3fiXxwH5JtbpWfm0tkmKC0dfGcxyvEhHEqp_lcZWq-MUju7Nh40nJXEfiX307kdGG1pual6gjNtPJqUNX2o48kJRCMFy8GIaSWJDNE8QzSPCm77I6QZrv5umV1qR0ffiQDF7dzrL1bSJ3licagyaVl3L', b'gAAAAABhroreBxGPQz85d5Z-9Bo4r7vMcGhN0yZU6KSSdqig4jK66k2pXcscD71BDP4qIKjwwQV7WSP2S4ermVw8E6__IeMDAtU0lE2v0zEB-bSDKUq7Wr8RDnWtH_qxwjoQx3AcsG8HMt6b2PruVHDgftwcWg1W7R5BI17W6P6LiwrSZz_6FE07sD60fPNq2F9yVXJjtWdwK5cy1Eb7MFzz4k3VZvtnyfvfBWWgORi6IDYh6RZx-ajLrDsenJ0xgQK9f5DHTwJp', b'gAAAAABhrore7tYObbAaA9D3SmbD8nSvawzo3CZA3NyVU4YJjY0xYusawiwzidm5lzkU4wsuel5R6SSkj3lHHb2iUdww8PP8Y7HW4EUvalN_G0FECRnPXSoKhEJ9R9qeWzlzosKppUiHmYlYTLisFYd0dmsk-g5KZvTmv3RWm20QeF8xIIaGV6qvbKbQ9-BxM7hgU7NkBujG_Nn0en8vF1bzZjTRjNFo_6DbZZa_53r-ZLNEuYW4wTpHeZXU1ZvjTrdE7QitTwKs']}
         '''
         wire1 = inputs[info['gates'][x['id']]['input'][0]]
         wire2 = inputs[info['gates'][x['id']]['input'][1]]
+        output_idx= info['gates'][x['id']]['output'][0]
         res = gateCalculator(wire1,wire2,x['garbledResult'])
-        inputs[x['output'][0]] = res
-    return inputs[info['output'][0]]
-
-
-
+        inputs[output_idx] = res
+    return result_map.index(inputs[info['output'][0]])
 
 def tester():
     with open("./equal.json") as f:
@@ -186,10 +191,17 @@ def tester():
     #print((res))
     gc ,result_map = cGarble(info,res)
     l=[]
+    pt=[]
     for x in range(4):
-        l.append(res[x*2+randint(0,1)])
-    gcEval(gc,l,info,result_map)
-    
+        r = randint(0,1)
+        pt.append(r)
+        l.append(res[x*2+r])
+    res= gcEval(gc,l,info,result_map)
+    print(res)
+    real= (pt[0]^pt[2]) or ((pt[1]^pt[3]))
+    print(real)
+    print(pt)
+#    assert(res==)
 
 if __name__ == "__main__":
     a= GarbledGates(1,0,b"AND")
