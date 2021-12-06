@@ -197,19 +197,22 @@ def tester():
         pt.append(r)
         l.append(res[x*2+r])
     res= gcEval(gc,l,info,result_map)
-    print(res)
+    #print(res)
     real= (pt[0]^pt[2]) or ((pt[1]^pt[3]))
-    print(real)
-    print(pt)
+    try:
+        assert(real==res)
+        return 1
+    except Exception:
+        return 0
+    #print(real)
+    #print(pt)
 #    assert(res==)
 
 if __name__ == "__main__":
-    a= GarbledGates(1,0,b"AND")
-    a.encCircuit()
-    c= a.pack()
-    res = a.unpack(c)
-    wire=[]
-    tester()
+    ct =0 
+    for x in range(1000):  
+        ct +=tester()
+    print(ct/1000)
     #wire.append(res['KYES'][:2])
     #wire.append(res['KYES'][2:4])
     #output = res['KYES'][4:]
