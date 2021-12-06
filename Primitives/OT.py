@@ -6,7 +6,7 @@ from Crypto.Random  import random
 
 def getRamdom(length):
     return gmpy2.mpz_urandomb(gmpy2.random_state(),1024)
-
+#
 # class Ot(object):
 #     # Bellare-Micali Protocal
 #     def __init__(self,id) -> None:
