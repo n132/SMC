@@ -83,7 +83,7 @@ class CyclicGroup:# Cyclic group
 
 def encrypt(key,data):# a little not secure because iv is included in the enc
     return Fernet(key).encrypt(data)
-def deccrypt(key,data):
+def decrypt(key,data):
     return Fernet(key).decrypt(data)
 def kengen():
     return Fernet.generate_key()
