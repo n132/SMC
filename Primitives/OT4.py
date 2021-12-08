@@ -33,21 +33,69 @@ def OT4_Sender(message,client):
     assert(len(enc)==4)
     # get 4 encoded data(enc) and keys(S)
     client.send(b"n132-OT4")
-    data = client.recv(1024)
+    try:
+        #Si
+        OT_Sender([long_to_bytes(S[0]),long_to_bytes(S[1])],client)
+    except:
+        print("[!] Disconnect: OT4-0")
+        client.close()
+        return -1
+    try:
+        #Sj
+        OT_Sender([long_to_bytes(S[2]),long_to_bytes(S[3])],client)
+    except:
+        print("[!] Disconnect: OT4-1")
+        client.close()
+        return -1
+    try:
+        #Sk
+        OT_Sender([long_to_bytes(S[4]),long_to_bytes(S[5])],client)
+    except:
+        print("[!] Disconnect: OT4-2")
+        client.close()
+        return -1
+    try:
+        # encrypted data
+        enc= json.dumps(enc).encode()
+        client.send(enc)
+        client.close()
+        return 1
+    except:
+        print("[!] Disconnect: OT4-3")
+        return -1
     
-
-
-
-
-
-def OT4_Receiver(choice,s):
+def OT4_Receiver(choice,server):
     assert(choice<4 and choice>=0)
     c = [choice//2,choice%2 ] 
-    m= s.recv(4)
+    m= server.recv(8)
     if(m==b"n132-OT4"):
-        OT_Receiver(c[0],s)
+        S0 = bytes_to_long(
+            OT_Receiver(c[0],server)
+            )
+        if(c[0]==0):
+            S1 = bytes_to_long(
+                OT_Receiver(c[1],server)
+                )
+            bytes_to_long(
+                OT_Receiver(randint(0,1),server)
+                )#this number is useless
+            
+        else:
+            bytes_to_long(
+                OT_Receiver(randint(0,1),server)
+                )#this number is useless
+            S1 = bytes_to_long(
+                OT_Receiver(c[1],server)
+                )
+            
+        enc= json.loads(server.recv(1024))
+        server.close()
+
+        result = enc[choice] ^ S0 ^ S1
+        #print(result)
+        return result
     else:
-        s.close()
+        server.close()
         return 2
 # 1-2 OT is reconstructed from the OT I build several days ago-
 
