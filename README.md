@@ -3,12 +3,14 @@
 
 # Team2
 ## Doing
-* OT reconstruction
-* GC
+* 1-4 OT
 ## Todo
-* Yao
 * GMW
 ## Done
 * socket communication
 * cyclic group (generator, mul, div, pow)
 * OT
+* GC
+* OT reconstruction
+* Yao
+
