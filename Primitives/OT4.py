@@ -1,5 +1,6 @@
 # 1-4 OT in GMW according http://people.eecs.berkeley.edu/~sanjamg/classes/cs276-fall14/scribe/lec16.pdf
 # n132
+import utils
 
 def OT2():
 # 1-2 OT is reconstructed from the OT I build several days ago-
