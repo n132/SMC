@@ -35,7 +35,6 @@ def Alice():
     while True:
         client,addr = s.accept()
         OT_Alice([b"This is secret 0",b"This is secret 1"],client)
-#def OTP_Alice(inputs,client):
     
 
 if __name__ == '__main__':
