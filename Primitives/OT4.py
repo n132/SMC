@@ -26,9 +26,17 @@ def OT4_Encrypt(S,m):
     )
     return res
 
-def OT4_Sender():
-    pass
-def OT4_Receiver():
+def OT4_Sender(message,client):
+    S = SGnenerator()
+    enc = OT4_Encrypt(S,message)
+    assert(len(enc)==4)
+    # get 4 encoded data(enc) and keys(S)
+    
+    
+
+
+
+def OT4_Receiver(choice,s):
     pass
 # 1-2 OT is reconstructed from the OT I build several days ago-
 

@@ -9,8 +9,8 @@ def OT_Encrypt(g,p,pk,s):
     return tmp+b'-'+n2b(tmp2)
 
 def OT_Receiver(choice,s):
-    m= s.recv(2)
-    if(m==b'Hi'):
+    m= s.recv(4)
+    if(m==b'n132'):
         GC = CyclicGroup(BigPrime)
         g = GC.generator
         data = n2b(BigPrime)+b"-"+n2b(g)
@@ -37,7 +37,7 @@ def OT_Receiver(choice,s):
         return 2
 
 def OT_Sender(message,client):
-    client.send(b"Hi")
+    client.send(b"n132")
     data= client.recv(1024)
     p, g=data.split(b"-")
     p = int(p)
