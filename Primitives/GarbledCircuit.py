@@ -1,4 +1,6 @@
 #n132
+import json
+from utils import *
 def AND(a,b):
     return a and b
 def OR(a,b):
@@ -12,85 +14,82 @@ SWICT = {
     "AND":AND,"and":AND,
     "OR":OR,"or":OR,
     "XOR":XOR,"xor":XOR,
+    "NOT":NOT,'not':NOT
 }
-import json
-from operator import indexOf
 
-from sympy.polys.densetools import _rec_integrate_in
-from utils import *
-class GarbledGates(object):
-    def __init__(self,wire_a,wire_b,logic,gid=0) -> None:
-        super().__init__()
-        if(logic==b"AND" or logic == b"and"):
-            self.gate = AND
-        elif(logic==b"OR" or logic == b"or"):
-            self.gate = OR
-        elif(logic==b"XOR" or logic == b"xor"):
-            self.gate = XOR
-        else:
-            exit(1)
-        self.a =wire_a
-        self.b =wire_b
-        self.k =None
-        self.c =None
-        self.keys = [[0,0],[0,0],[0,0]]
-        self.GetKeys()
-        self.gid = gid
+# class GarbledGates(object):
+#     def __init__(self,wire_a,wire_b,logic,gid=0) -> None:
+#         super().__init__()
+#         if(logic==b"AND" or logic == b"and"):
+#             self.gate = AND
+#         elif(logic==b"OR" or logic == b"or"):
+#             self.gate = OR
+#         elif(logic==b"XOR" or logic == b"xor"):
+#             self.gate = XOR
+#         else:
+#             exit(1)
+#         self.a =wire_a
+#         self.b =wire_b
+#         self.k =None
+#         self.c =None
+#         self.keys = [[0,0],[0,0],[0,0]]
+#         self.GetKeys()
+#         self.gid = gid
 
-    def GetKeys(self):
-        for x in range(3):
-            for y in range(2):
-                self.keys[x][y] = kengen()
-        return self.keys
-    def encCircuit(self):
-        #Generate encrypted data with generated keys
-        #-----------------------------------
+#     def GetKeys(self):
+#         for x in range(3):
+#             for y in range(2):
+#                 self.keys[x][y] = kengen()
+#         return self.keys
+#     def encCircuit(self):
+#         #Generate encrypted data with generated keys
+#         #-----------------------------------
         
-        self.k = [[0,0],[0,0],[0,0]]
-        for x in range(3):
-            for y in range(2):
-                self.k[x][y] = encrypt(self.keys[x][y],str(y).encode())
-        #Generate garbled output
-        #-----------------------------------
-        ptr = self.keys
-        self.c=[]
-        for x in range(2):
-            tmp = []
-            for y in range(2):
-                content  = self.k[2][self.gate(x,y)]
-                tmp.append( encrypt(ptr[0][x],encrypt(ptr[1][y],content)) )
-            self.c+= tmp
-        return 
-        #pack the data
-        #-----------------------------------
-        # for x in self.c:
-        #     print(x)
-        # for y in self.keys:
-        #     print(y)
-        #---------------------------------------------
-    def pack(self):
-        key = [] 
-        for _ in self.keys:
-            key += [__.decode() for __ in _]
-        tmp = []
+#         self.k = [[0,0],[0,0],[0,0]]
+#         for x in range(3):
+#             for y in range(2):
+#                 self.k[x][y] = encrypt(self.keys[x][y],str(y).encode())
+#         #Generate garbled output
+#         #-----------------------------------
+#         ptr = self.keys
+#         self.c=[]
+#         for x in range(2):
+#             tmp = []
+#             for y in range(2):
+#                 content  = self.k[2][self.gate(x,y)]
+#                 tmp.append( encrypt(ptr[0][x],encrypt(ptr[1][y],content)) )
+#             self.c+= tmp
+#         return 
+#         #pack the data
+#         #-----------------------------------
+#         # for x in self.c:
+#         #     print(x)
+#         # for y in self.keys:
+#         #     print(y)
+#         #---------------------------------------------
+#     def pack(self):
+#         key = [] 
+#         for _ in self.keys:
+#             key += [__.decode() for __ in _]
+#         tmp = []
 
-        for _ in self.c:
-            tmp.append( _.decode() )
-        data = {
-            "GID": self.gid,#Gate ID
-            "KEYS": key,
-            "OUT": tmp
-        }
-        res = json.dumps(data)
-        return res
-    def unpack(self,data):
-        data = json.loads(data)
-        return data
-        #print(data['KEYS'])
+#         for _ in self.c:
+#             tmp.append( _.decode() )
+#         data = {
+#             "GID": self.gid,#Gate ID
+#             "KEYS": key,
+#             "OUT": tmp
+#         }
+#         res = json.dumps(data)
+#         return res
+#     def unpack(self,data):
+#         data = json.loads(data)
+#         return data
+#         #print(data['KEYS'])
 
-    def genGC(self):
-        self.encCircuit()
-        return self.pack()
+#     def genGC(self):
+#         self.encCircuit()
+#         return self.pack()
 # based on Lecture 10 page 14    
     
 def iLabel(info):
@@ -204,9 +203,6 @@ def tester():
         return 1
     except Exception:
         return 0
-    #print(real)
-    #print(pt)
-#    assert(res==)
 
 if __name__ == "__main__":
     ct =0 
