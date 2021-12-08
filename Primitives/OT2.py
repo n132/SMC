@@ -30,10 +30,8 @@ def OT_Receiver(choice,s):
         u = int(u)
         v = int(v)
         res=long_to_bytes( bytes_to_long(hash(n2b(GC.pow(u,k))))  ^ v )
-        s.close()
         return res
     else:
-        s.close()
         return -1
 
 def OT_Sender(message,client):
@@ -55,4 +53,4 @@ def OT_Sender(message,client):
     data+=b'-'
     data+= OT_Encrypt(g,p,pks[1],sec[1])
     client.send(data)
-    client.close()
+    return 1

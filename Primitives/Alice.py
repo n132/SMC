@@ -10,6 +10,6 @@ def Alice_OT2():
     while True:
         client,addr = s.accept()
         OT_Sender([b"This is secret 0",b"This is secret 1"],client)
-    
+        client.close()
 if __name__ == '__main__':
     Alice_OT2()

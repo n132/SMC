@@ -4,8 +4,9 @@ def Bob_OT2(cmd):
     s = socket.socket()
     host = socket.gethostname()
     s.connect((host, PORT))
-    return OT_Receiver(cmd,s)
-
+    res= OT_Receiver(cmd,s)
+    s.close()
+    return res
 if __name__ == "__main__":
     ct = 0 
     for x in range(1000):
