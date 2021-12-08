@@ -1,6 +1,7 @@
 # 1-4 OT in GMW according http://people.eecs.berkeley.edu/~sanjamg/classes/cs276-fall14/scribe/lec16.pdf
 # n132
 import utils
+import json
 from OT2 import *
 from random import randint
 
@@ -31,13 +32,23 @@ def OT4_Sender(message,client):
     enc = OT4_Encrypt(S,message)
     assert(len(enc)==4)
     # get 4 encoded data(enc) and keys(S)
+    client.send(b"n132-OT4")
+    data = client.recv(1024)
     
-    
+
+
 
 
 
 def OT4_Receiver(choice,s):
-    pass
+    assert(choice<4 and choice>=0)
+    c = [choice//2,choice%2 ] 
+    m= s.recv(4)
+    if(m==b"n132-OT4"):
+        OT_Receiver(c[0],s)
+    else:
+        s.close()
+        return 2
 # 1-2 OT is reconstructed from the OT I build several days ago-
 
 
