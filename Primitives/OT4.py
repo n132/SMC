@@ -92,11 +92,10 @@ def OT4_Receiver(choice,server):
         server.close()
 
         result = enc[choice] ^ S0 ^ S1
-        #print(result)
         return result
     else:
         server.close()
-        return 2
+        return -1
 # 1-2 OT is reconstructed from the OT I build several days ago-
 
 

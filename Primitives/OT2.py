@@ -35,7 +35,6 @@ def OT_Receiver(choice,server):
         return -1
 
 def OT_Sender(message,client):
-    #if(1):
     try:
         client.send(b"n132-OT2")
         data= client.recv(1024)
