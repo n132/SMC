@@ -5,16 +5,21 @@ from garble import *
 socket = zmq.Context().socket(zmq.REQ)
 socket.connect("tcp://localhost:5555")
 
-# need keys
-
-circuit = Circuit()
-keys = circuit.all_key()
-
-#print(circuit.all_key())
 
 
+a = Circuit()
+circuit = a.get_circuit()
+table = a.gen_garbled_table()
+pbits = a.pbits
 
-socket.send(b"Hello")
+# Alice send circuit, garbled table and pbits
+socket.send_pyobj({
+            "circuit": circuit,
+            "table": table,
+            "pbits": pbits
+            })
+
+            
 
 message = socket.recv()
 print("alice received reply [ %s ]" % (message))

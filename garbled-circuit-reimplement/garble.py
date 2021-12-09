@@ -92,10 +92,11 @@ class GarbledGate:
         return table
 
 
-
+def degarble(circuit, table, pbits, in_a, in_b):
+    pass
 
 #a = GarbledGate({"id": 5, "type": "NAND", "in": [3, 4]}, [0, 0, 1, 1, 0, 1, 1, 0, 0, 1], circuit.all_key())
 #a.gen_garbled_gate_table()
 
 a = Circuit()
-a.gen_garbled_table()
+table = a.gen_garbled_table()
