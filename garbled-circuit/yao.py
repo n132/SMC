@@ -175,10 +175,8 @@ class GarbledGate:
 
 class GarbledCircuit:
     """ Garbled circuit representation
-    
     Args
     """
-
     def __init__(self, circuit, pbits={}):
         self.circuit = circuit
         self.gates = circuit["gates"]
