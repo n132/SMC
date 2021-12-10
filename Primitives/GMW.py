@@ -24,19 +24,15 @@ def GMW_Sender(inputs,skt):# Alice
     data = json.loads(data)
     skt.send()
 
-    
-   
-        
 def GMW_Reveiver(inputs,skt):# Bob
     A2,B2 = GMW_SPLITER(inputs)
     if(skt.recv(8)==b"n132-GMW"):
         # B-exchange
         skt.send(json.dumps(A2).encode())
-        B1 = json.loads(skt.recv(1024))
+        B1 = json.loads(skt.recv(1024))#$?
+        
         # ----- Bob's shares: B1 B2 
         # receive the circuit
-
-
         return 1
     else:
         return -1
