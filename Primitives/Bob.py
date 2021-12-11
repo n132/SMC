@@ -1,3 +1,4 @@
+from os import times
 from OT4 import *
 from GMW import *
 PORT = 6999
@@ -39,9 +40,17 @@ if __name__ != "__main__":
     print((1000-ct)/1000)
 if __name__ == "__main__":
     ct = 0
-    for x in range(100):
-        r = randint(0,1)
-        res=Bob_GMW([r])
-        if(res!=(r & 1)):
+    import time
+    t = time.time()
+    for x in range(1000):
+        tmp = []
+        for y in range(2):
+            tmp.append(randint(0,1))
+        res=Bob_GMW(tmp)
+        oracle = (tmp ==[1,0])
+        #print(oracle)
+        #print(res)
+        if(not res== oracle):
             ct +=1
+    print(time.time()-t)
     print(ct)

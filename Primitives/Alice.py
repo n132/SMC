@@ -27,7 +27,7 @@ def Alice_GMW():
     s.listen(5)
     while True:
         client,addr = s.accept()
-        res = GMW_Sender([1],client,"./Gmix1.json")
+        res = GMW_Sender([1,0],client,"./Gequal.json")
         client.close()
         #print(res)
 if __name__ == '__main__':
