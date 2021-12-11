@@ -6,7 +6,10 @@ SWITCH = {
     "AND": lambda x, y: x and y,
     "OR": lambda x, y: x or y,
     "XOR": lambda x, y: x ^ y,
-    "NOT": lambda x: not x
+    "NOT": lambda x: not x,
+    "NAND": lambda x, y: not (x and y),
+    "NOR": lambda x, y: not (x or y),
+    "XNOR": lambda x, y: not (x ^ y)
 }
 
 def encrypt(key,data):# a little not secure because iv is included in the enc
@@ -50,21 +53,32 @@ def garbleCircuit(cinfo, labels):
         gate = {}
         res = []
         logic = SWITCH[g["type"]]
-        for i in range(2):  # loop through inputs and create gate table values
-            for j in range(2):
-                # output labels
-                g_out = logic(i,j)
-                assert(g_out == 0 or g_out ==1)
-                #print("",labels[g["output"][0]][g_out], "\n")
+        if(g["type"] == "NOT"):
+            #special case for NOT since it only has 1 input
+            for i in range(2):
+                g_out = logic(i)
+                assert(g_out == 0 or g_out == 1)
                 raw_label = labels[g["output"][0]][g_out]
-                #print(raw_label)
-                # get keys from labels
-                #print("  ", labels[g["input"][0]][i], "\n")
                 k0 = labels[g["input"][0]][i]
-                k1 = labels[g["input"][1]][j]
 
-                tmp = encrypt(k1, encrypt(k0, raw_label))
+                tmp = encrypt(k0, raw_label)
                 res.append(tmp)
+        else:
+            for i in range(2):  # loop through inputs and create gate table values
+                for j in range(2):
+                    # output labels
+                    g_out = logic(i,j)
+                    assert(g_out == 0 or g_out ==1)
+                    #print("",labels[g["output"][0]][g_out], "\n")
+                    raw_label = labels[g["output"][0]][g_out]
+                    #print(raw_label)
+                    # get keys from labels
+                    #print("  ", labels[g["input"][0]][i], "\n")
+                    k0 = labels[g["input"][0]][i]
+                    k1 = labels[g["input"][1]][j]
+
+                    tmp = encrypt(k1, encrypt(k0, raw_label))
+                    res.append(tmp)
         
         gate["id"] = g["id"]
         gate["garbledResult"] = res
@@ -84,9 +98,14 @@ def evalGate(w1, w2, table):
     # attempt decryption on all gates
     for g in table:
         try:
-            res=decrypt(w1, decrypt(w2, g))
-            if(res):
-                return res
+            if(w2):
+                res=decrypt(w1, decrypt(w2, g))
+                if(res):
+                    return res
+            else:
+                res = decrypt(w1, g)
+                if(res):
+                    return res
         except Exception:
             pass
     # failed to evaluate gate
@@ -109,8 +128,14 @@ def evalCircuit(gc, inputs, cinfo, results_map):
         '''
         {"id": 0, "garbledResult": [b'xxxxxx, ....]}
         '''
+        gatettype = cinfo["gates"][x["id"]]["type"]
+
         wire1 = inputs[cinfo["gates"][x["id"]]["input"][0]]
-        wire2 = inputs[cinfo["gates"][x["id"]]["input"][1]]
+        if(gatettype == "NOT"):
+            wire2 = None
+        else:
+            wire2 = inputs[cinfo["gates"][x["id"]]["input"][1]]
+        
         output_idx = cinfo["gates"][x["id"]]["output"][0]
         res = evalGate(wire1, wire2, x["garbledResult"])
         inputs[output_idx] = res
