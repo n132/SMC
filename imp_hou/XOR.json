@@ -1,0 +1,8 @@
+{
+	"inputs" : [0,1,2,3],
+	"output" : [4],
+	"gates" :[
+		{"id": 0, "type": "XOR" , "input": [0,2], "output":[4]}
+	],
+	"Describe" : "single gate test"
+}
