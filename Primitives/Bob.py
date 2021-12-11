@@ -42,15 +42,16 @@ if __name__ == "__main__":
     ct = 0
     import time
     t = time.time()
-    for x in range(1000):
+    for x in range(100):
         tmp = []
-        for y in range(2):
+        for y in range(8):
             tmp.append(randint(0,1))
         res=Bob_GMW(tmp)
-        oracle = (tmp ==[1,0])
+        #print(tmp)
+        oracle = (tmp ==[1,0,1,0,1,1,1,1])
         #print(oracle)
         #print(res)
-        if(not res== oracle):
+        if(res== oracle):
             ct +=1
     print(time.time()-t)
     print(ct)

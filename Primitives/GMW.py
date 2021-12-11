@@ -47,7 +47,7 @@ def GMW_Reveiver(inputs,skt):# Bob
 
         # ----- Bob's shares: B1 B2 
         # receive the circuit
-        cir = json.loads(skt.recv(1024))
+        cir = json.loads(skt.recv(4096))
         skt.send(b"go!")
 
         share = B1+B2
@@ -65,7 +65,6 @@ def GMW_Sender(inputs,skt,cir="./Gequal.json"):# Alice
     # send the circuit
     with open(cir) as f:
         circuit = f.read()
-    
     skt.send(circuit.encode())
     circuit = json.loads(circuit)
     # send the data to the calculator-x
