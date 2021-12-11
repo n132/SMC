@@ -1,0 +1,104 @@
+{
+
+	"inputs" : [0,1,2,3],
+	"output" : [69],
+	"gates" :[
+		{"id": 0, "type": "XOR" , "input": [0,2], "output":[4]},
+		{"id": 1 , "type": "XOR" , "input": [1,3], "output":[5]},
+		{"id": 2 , "type": "OR", "input": [4,5], "output":[6]},
+
+		{"id": 3, "type": "XOR", "input": [0,2], "output":[7]},
+		{"id": 4, "type": "XOR", "input": [1,3], "output":[8]},
+		{"id": 5, "type": "OR", "input": [7,8], "output":[9]},
+
+		{"id": 6, "type": "OR", "input": [6,9], "output":[10]},
+
+		{"id": 7, "type": "XOR" , "input": [0,2], "output":[11]},
+		{"id": 8 , "type": "XOR" , "input": [1,3], "output":[12]},
+		{"id": 9 , "type": "OR", "input": [11,12], "output":[13]},
+
+		{"id": 10, "type": "XOR", "input": [0,2], "output":[14]},
+		{"id": 11, "type": "XOR", "input": [1,3], "output":[15]},
+		{"id": 12, "type": "OR", "input": [14,15], "output":[16]},
+
+		{"id": 13, "type": "OR", "input": [13,16], "output":[17]},
+		{"id": 14, "type": "OR", "input": [10,17], "output":[18]},
+		
+		
+		{"id": 15, "type": "XOR" , "input": [0,2], "output":[18]},
+		{"id": 16, "type": "XOR" , "input": [1,3], "output":[19]},
+		{"id": 17, "type": "OR", "input": [18,19], "output":[20]},
+
+		{"id": 18, "type": "XOR", "input": [0,2], "output":[21]},
+		{"id": 19, "type": "XOR", "input": [1,3], "output":[22]},
+		{"id": 20, "type": "OR", "input": [21,22], "output":[23]},
+
+		{"id": 21, "type": "OR", "input": [20,23], "output":[24]},
+
+		{"id": 22, "type": "XOR" , "input": [0,2], "output":[25]},
+		{"id": 23, "type": "XOR" , "input": [1,3], "output":[26]},
+		{"id": 24, "type": "OR", "input": [25,26], "output":[27]},
+
+		{"id": 25, "type": "XOR", "input": [0,2], "output":[28]},
+		{"id": 26, "type": "XOR", "input": [1,3], "output":[29]},
+		{"id": 27, "type": "OR", "input": [28,29], "output":[30]},
+
+		{"id": 28, "type": "OR", "input": [27,30], "output":[31]},
+		{"id": 29, "type": "OR", "input": [24,31], "output":[32]},
+
+		{"id": 30, "type": "OR", "input": [18,32], "output":[33]},
+		{"id": 31, "type": "NOT", "input": [33], "output":[34]},
+		{"id": 32, "type": "NOT", "input": [34], "output":[35]},
+
+
+
+		{"id": 33, "type": "XOR" , "input": [0,2], "output":[36]},
+		{"id": 34, "type": "XOR" , "input": [1,3], "output":[37]},
+		{"id": 35, "type": "OR", "input": [36,37], "output":[38]},
+
+		{"id": 36, "type": "XOR", "input": [0,2], "output":[39]},
+		{"id": 37, "type": "XOR", "input": [1,3], "output":[40]},
+		{"id": 38, "type": "OR", "input": [39,40], "output":[41]},
+
+		{"id": 39, "type": "OR", "input": [38,41], "output":[42]},
+
+		{"id": 40, "type": "XOR" , "input": [0,2], "output":[43]},
+		{"id": 41, "type": "XOR" , "input": [1,3], "output":[44]},
+		{"id": 42, "type": "OR", "input": [43,44], "output":[45]},
+
+		{"id": 43, "type": "XOR", "input": [0,2], "output":[46]},
+		{"id": 44, "type": "XOR", "input": [1,3], "output":[47]},
+		{"id": 45, "type": "OR", "input": [46,47], "output":[48]},
+
+		{"id": 46, "type": "OR", "input": [45,48], "output":[49]},
+		{"id": 47, "type": "OR", "input": [42,49], "output":[50]},
+		
+		
+		{"id": 48, "type": "XOR" , "input": [0,2], "output":[51]},
+		{"id": 49, "type": "XOR" , "input": [1,3], "output":[52]},
+		{"id": 50, "type": "OR", "input": [51,52], "output":[53]},
+
+		{"id": 51, "type": "XOR", "input": [0,2], "output":[54]},
+		{"id": 52, "type": "XOR", "input": [1,3], "output":[55]},
+		{"id": 53, "type": "OR", "input": [54,5], "output":[56]},
+
+		{"id": 54, "type": "OR", "input": [53,56], "output":[57]},
+
+		{"id": 55, "type": "XOR" , "input": [0,2], "output":[58]},
+		{"id": 56, "type": "XOR" , "input": [1,3], "output":[59]},
+		{"id": 57, "type": "OR", "input": [58,59], "output":[60]},
+
+		{"id": 58, "type": "XOR", "input": [0,2], "output":[61]},
+		{"id": 59, "type": "XOR", "input": [1,3], "output":[62]},
+		{"id": 60, "type": "OR", "input": [61,62], "output":[63]},
+
+		{"id": 61, "type": "OR", "input": [60,63], "output":[64]},
+		{"id": 62, "type": "OR", "input": [57,64], "output":[65]},
+
+		{"id": 63, "type": "OR", "input": [50,65], "output":[66]},
+		{"id": 64, "type": "OR", "input": [35,66], "output":[67]},
+		{"id": 65, "type": "NOT", "input": [67], "output":[68]},
+		{"id": 66, "type": "NOT", "input": [68], "output":[69]}
+	],
+	"Describe" : "n132: it's a basic circuit to compare looped two-bit numebrs (16 bits)"
+}

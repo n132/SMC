@@ -3,6 +3,8 @@ import gcot
 import pickle
 from utils import *
 
+import time
+
 # server sends secrets to client
 def ottestb():
     with listen() as s:
@@ -14,14 +16,22 @@ def ottestb():
                 conn.close()
 
 def cgarbltestb():
+    STARTFLAG = False
+    STARTTIME = 0.0
+    ENDTIME = 0.0
+
     with listen() as s:
         rounds = 0
         correct = 0
-        while(rounds < 800):
+        while(rounds < 1000):
             conn, addr = s.accept()
             with conn:
+                if(not STARTFLAG):
+                    STARTTIME = time.time()
+                    STARTFLAG = True
+                
                 # receive stuff from alice 
-                a = conn.recv(25000)
+                a = conn.recv(256000)
                 """
                 {
                     "gc": {}
@@ -75,8 +85,9 @@ def cgarbltestb():
                 if(real == eval_result):
                     correct += 1
                 rounds += 1
-        
+        ENDTIME = time.time()
         print("ratio:", correct/rounds)
+        print("Time Elapsed:", (ENDTIME - STARTTIME))
 
 def singletestb():
     with listen() as s:
@@ -86,7 +97,7 @@ def singletestb():
             conn, addr = s.accept()
             with conn:
                 # receive stuff from alice 
-                a = conn.recv(25000)
+                a = conn.recv(256000)
                 """
                 {
                     "gc": {}
@@ -146,5 +157,5 @@ def singletestb():
 
 if(__name__ == "__main__"):
     #ottestb()
-    #cgarbltestb()
-    singletestb()
+    cgarbltestb()
+    #singletestb()

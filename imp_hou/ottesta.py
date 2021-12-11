@@ -12,7 +12,7 @@ def ottest1():
 
 # cgarbl socket test
 def cgarbtesta():
-    with open("./equal.json") as f:
+    with open("./bigEquals.json") as f:
         data = f.read()
     
     cinfo = json.loads(data)
@@ -100,4 +100,4 @@ def singlegatetesta():
 if(__name__ == "__main__"):
     # ottest1()
     for i in range(1000):
-        singlegatetesta()
+        cgarbtesta()
