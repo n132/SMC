@@ -27,10 +27,13 @@ def Alice_GMW():
     s.listen(5)
     while True:
         client,addr = s.accept()
-        res = GMW_Sender([0,1,1,0],client)
+        res = GMW_Sender([1],client,"./Gmix1.json")
         client.close()
-        print(res)
+        #print(res)
 if __name__ == '__main__':
     #Alice_OT2()
     #Alice_OT4()
     Alice_GMW()
+
+# XOR Single GATE pass
+# 

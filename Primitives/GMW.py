@@ -20,18 +20,22 @@ def ReceiveANum(client):
     except:
         return -1
 def GMW_X(skt):# x's solutiin: a untrusted third party could help calculation
+    #skt.send(b"X1")
     n1 = ReceiveANum(skt)
     s = socket.socket()
     host = socket.gethostname()
     s.bind((host, 1026))
     s.listen(5)
+    
     skt2,addr = s.accept()
+    #skt2.send(b"X2")
     n2 = ReceiveANum(skt2)
     skt2.close()
     if(n1==-1 or n2 ==-1):
         exit(1)
     res = n1 ^ n2
-    skt.send(res)
+    #print(n1,n2)
+    skt.send(str(res).encode())
     skt.close()
     return 1   
 def GMW_Reveiver(inputs,skt):# Bob
@@ -44,16 +48,14 @@ def GMW_Reveiver(inputs,skt):# Bob
         # ----- Bob's shares: B1 B2 
         # receive the circuit
         cir = json.loads(skt.recv(1024))
-        #print(circuit)
-        skt.send("go!")
+        skt.send(b"go!")
 
         share = B1+B2
         res = evaluateClient(skt,cir,inputs,share)
         return res
     else:
         return -1
-# request
-def GMW_Sender(inputs,skt):# Alice
+def GMW_Sender(inputs,skt,cir="./Gequal.json"):# Alice
     # B- exchange
     A1,B1 = GMW_SPLITER(inputs)
     skt.send(b"n132-GMW")
@@ -61,7 +63,7 @@ def GMW_Sender(inputs,skt):# Alice
     skt.send(json.dumps(B1).encode())
     #------ Alice's shares: A1 A2
     # send the circuit
-    with open("./Gequal.json") as f:
+    with open(cir) as f:
         circuit = f.read()
     
     skt.send(circuit.encode())
@@ -71,7 +73,6 @@ def GMW_Sender(inputs,skt):# Alice
         exit(1)
     share = A1 + A2
     res = evaluateServer(skt,circuit,inputs,share)
-    #print(res)
     return res
 def req_x(num,skt,id):
     s = socket.socket()
@@ -83,11 +84,11 @@ def req_x(num,skt,id):
         "id":id
     }
     # request client
-    skt.send(json.dumps(data))
+    data = json.dumps(data).encode()
+    skt.send(data)
     if(skt.recv(3)!=b"XxX"):
         exit(1)
     res = int(s.recv(1024))
-    s.close()
     return res
 def req_y(myshare):
     s = socket.socket()
@@ -110,16 +111,16 @@ def NOX(skt,id):
     if(skt.recv(3)!=b"XxX"):
         exit(1)
     return 1
-    #print(id)#request
 def AND_Request(skt,gate,share):
     data={
         "type": "Y",
         "id": gate['id']
     }
-    skt.send(json.dumps(data))
-
-    choice = (share[gate['input'][0]]<1)+share[gate['input'][1]] 
+    skt.send(json.dumps(data).encode())
+    choice = (share[gate['input'][0]]*2)+share[gate['input'][1]]
+    #print("Choice",choice)
     res = OT4_Receiver(choice,skt)
+    #print("res",res)
     res = req_x(res,skt,-1)
     return res 
 def evaluateServer(skt,cir,data,share):
@@ -130,7 +131,6 @@ def evaluateServer(skt,cir,data,share):
     # init data pool
     for _ in range(len(s_in)):
         pool[s_in[_]] = data[_]
-    #print(pool)
     for x in gates:
         logic = x['type']
         if(logic == 'NOT'):
@@ -150,6 +150,7 @@ def evaluateServer(skt,cir,data,share):
                 pool[x['output'][0]]= pool[x['input'][0]] & pool[x['input'][1]]
             elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):
                 pool[x['output'][0]]= AND_Request(skt,x,share)
+                #print("SHARE",share)
             else:
                 NOX(skt,x['id'])
         else:
@@ -158,7 +159,7 @@ def evaluateServer(skt,cir,data,share):
         "result": pool[-1],
         "id": 0x6999
     }
-    skt.send(json.dumps(data))
+    skt.send(json.dumps(data).encode())
     return pool[-1]
 def evaluateClient(skt,cir,data,share):
     gates= cir['gates'] 
@@ -189,17 +190,19 @@ def evaluateClient(skt,cir,data,share):
             if(tmp['type']=="XOR"):
                 myshare = share[ tmp['input'][0] ] ^ share[ tmp['input'][1] ]
                 req_y(myshare)
-                skt.senc(b"XxX")
+                skt.send(b"XxX")
             elif(tmp['type']=="AND"):
                 myshare = [share[tmp['input'][0]], share[tmp['input'][1]]]
                 table = tableMaker(myshare)
                 alpha = randint(0,1)
                 enc_table = [(x^alpha) for x in table]
-                OT4_Sender(enc_table,skt)
-                data = json.dumps(skt.recv(1024))['id']
+                OT4_Sender(enc_table,skt)             
+                #data = json.dumps(skt.recv(1024))
+                data = json.loads(skt.recv(1024))
+                data = data['id']
                 if(data==-1):
                     req_y(alpha)
-                    skt.senc(b"XxX")
+                    skt.send(b"XxX")
                 else:
                     exit(-1)
 
@@ -218,4 +221,4 @@ if __name__ == '__main__':
     with open("./Gequal.json") as f:
         circuit = f.read()
     cir  = json.loads(circuit)
-    evaluateServer(0,cir,[0,1])
+    evaluateServer(0,cir,[0,1],[1,2])

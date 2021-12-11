@@ -1,0 +1,11 @@
+{
+
+	"S-inputs" : [0],
+    "C-inputs" : [1],
+	"output" : [3],
+	"gates" :[
+		{"id": 0, "type": "AND" , "input": [0,1], "output":[2]},
+        {"id": 1, "type": "NOT" , "input": [2], "output":[3]}
+	],
+	"Describe" : "n132 Gate Tester: AND gate"
+}
