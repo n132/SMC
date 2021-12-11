@@ -38,27 +38,27 @@ def OT4_Sender(message,client):
         OT_Sender([long_to_bytes(S[0]),long_to_bytes(S[1])],client)
     except:
         print("[!] Disconnect: OT4-0")
-        client.close()
+        #client.close()
         return -1
     try:
         #Sj
         OT_Sender([long_to_bytes(S[2]),long_to_bytes(S[3])],client)
     except:
         print("[!] Disconnect: OT4-1")
-        client.close()
+        #client.close()
         return -1
     try:
         #Sk
         OT_Sender([long_to_bytes(S[4]),long_to_bytes(S[5])],client)
     except:
         print("[!] Disconnect: OT4-2")
-        client.close()
+        #client.close()
         return -1
     try:
         # encrypted data
         enc= json.dumps(enc).encode()
         client.send(enc)
-        client.close()
+        #client.close()
         return 1
     except:
         print("[!] Disconnect: OT4-3")

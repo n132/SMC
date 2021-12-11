@@ -8,5 +8,14 @@ def X():#Xiang's solution
             GMW_X()
         except:
             pass
+def XxX():
+    s = socket.socket()
+    host = socket.gethostname()
+    s.bind((host, 1025))
+    s.listen(5)
+    while True:
+        client,addr = s.accept()
+        GMW_X(client)
+        client.close()
 if __name__ == "__main__":
-    X()
+    XxX()
