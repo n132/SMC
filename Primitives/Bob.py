@@ -15,11 +15,11 @@ def Bob_OT4(cmd):
     res= OT4_Receiver(cmd,s)
     s.close()
     return res
-def Bob_GMW():
+def Bob_GMW(data):
     s = socket.socket()
     host = socket.gethostname()
     s.connect((host, PORT))
-    res= GMW_Reveiver([1,0,1,0],s)
+    res= GMW_Reveiver(data,s)
     s.close()
     return res
 if __name__ != "__main__":
@@ -38,4 +38,10 @@ if __name__ != "__main__":
             ct +=1
     print((1000-ct)/1000)
 if __name__ == "__main__":
-    Bob_GMW()
+    ct = 0
+    for x in range(100):
+        r = randint(0,1)
+        res=Bob_GMW([r])
+        if(res!=(r & 1)):
+            ct +=1
+    print(ct)
