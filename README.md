@@ -5,7 +5,6 @@
 This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Party Communication).
 
 1. Yao's Garbled Circuit
-
 - Garbled Circuit
     - iLabel: Lable input wires
     - cGarble: Generate garbled circuits
@@ -13,23 +12,12 @@ This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Pa
 - Oblivious Transfer
     - Cyclic Group
     - 1 in 2 OT based on Bellare-Micali protocol
-- Gates
-    - AND
-    - OR
-    - NOT
-    - XOR
-
 2. GMW
 - Secret Sharing
     - n-1 random bits
     - XOR the secret and random bits to get the last bit 
 - Oblivious Transfer
     - Expand 1 in 2 OT to 1 in 4 OT
-- Gates
-    - XOR
-    - OR
-    - NOT
-
 ## Usage
 
 Wrapper (to be added)
