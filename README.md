@@ -30,10 +30,13 @@ Wrapper (to be added)
 - Bob evaluates the circuit and sends back the result
 
 2. GMW
+- Alice, Bob, Dealer build socket connect with each other
+- 
 
 ## Details
 
 Function used to test the protocols: Equality function
+
 Encryption library: Fernet from Python Cryptography
 
 
@@ -45,3 +48,12 @@ Encryption library: Fernet from Python Cryptography
 
 - Yao’s Garbled Circuits: Recent Directions and Implementations (https://www.peteresnyder.com/static/papers/Peter_Snyder_-_Garbled_Circuits_WCP_2_column.pdf)
 
+- Secure multi-party computation (http://people.eecs.berkeley.edu/~sanjamg/classes/cs276-fall14/scribe/lec16.pdf)
+
+- GMW Protocol (https://www.cs.purdue.edu/homes/hmaji/teaching/Fall%202017/lectures/39.pdf)
+
+- APragmatic Introduction to Secure Multi-Party Computation (https://www.cs.virginia.edu/~evans/pragmaticmpc/pragmaticmpc.pdf)
+
+- Financial Cryptographyand Data Security (https://link.springer.com/content/pdf/10.1007%2F978-3-642-39884-1.pdf)
+
+- Cyclic Group (https://github.com/ojroques/garbled-circuit)
