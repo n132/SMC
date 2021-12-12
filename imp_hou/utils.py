@@ -81,7 +81,6 @@ class CyclicGroup:# Cyclic group
         return randint(1, self.p - 1)
     def find_generator(self):
         factors = sympy.primefactors(self.p-1)
-
         while True:
             candidate = self.rand_int()
             for factor in factors:

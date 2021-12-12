@@ -44,7 +44,9 @@ Function used to test the protocols: Equality function
 
 Encryption library: Fernet from Python Cryptography
 
+OT2: Bellare-Micali protocol
 
+OT4:
 
 ## Reference
 
