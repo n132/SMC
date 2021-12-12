@@ -2,7 +2,7 @@
 
 ## Module Intro
 
-This repo contains our implemenation of two protocols in SMC(Secure Multi-party Communication).
+This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Party Communication).
 
 1. Yao's Garbled Circuit
 
@@ -11,10 +11,24 @@ This repo contains our implemenation of two protocols in SMC(Secure Multi-party 
     - cGarble: Generate garbled circuits
     - gcEval: Evaluate the garbled circuits
 - Oblivious Transfer
-    - Use Cyclic Group
-    - 1 in 2 OT
+    - Cyclic Group
+    - 1 in 2 OT based on Bellare-Micali protocol
+- Gates
+    - AND
+    - OR
+    - NOT
+    - XOR
 
 2. GMW
+- Secret Sharing
+    - n-1 random bits
+    - XOR the secret and random bits to get the last bit 
+- Oblivious Transfer
+    - Expand 1 in 2 OT to 1 in 4 OT
+- Gates
+    - XOR
+    - OR
+    - NOT
 
 ## Usage
 
@@ -37,7 +51,7 @@ Encryption library: Fernet from Python Cryptography
 
 ## Reference
 
-- Lecture 10 slides
+- Lecture 10 slides 
 
 - Secure Multiparty Computation and Secret Sharing (https://www.cambridge.org/core/books/secure-multiparty-computation-and-secret-sharing/4C2480B202905CE5370B2609F0C2A67A)
 
