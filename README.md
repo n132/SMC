@@ -46,7 +46,7 @@ Encryption library: Fernet from Python Cryptography
 
 OT2: Bellare-Micali protocol
 
-OT4:
+Cyclic Group: 
 
 ## Reference
 
