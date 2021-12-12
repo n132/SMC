@@ -23,7 +23,8 @@ Wrapper (to be added)
 ## Communication Procedure Intro
 
 1. Yao's Garbled Circuit
-- Alice sends Bob the circuit, garbled table, and keys for each wire
+- Alice sends Bob the circuit, garbled table, and Alice's inputs
+- Bob gets his own inputs through OT
 - Bob evaluates the circuit and sends back the result
 
 2. GMW
@@ -31,6 +32,7 @@ Wrapper (to be added)
 ## Details
 
 Function used to test the protocols: Equality function
+Encryption library: Fernet from Python Cryptography
 
 
 ## Reference
@@ -38,4 +40,6 @@ Function used to test the protocols: Equality function
 - Lecture 10 slides
 
 - Secure Multiparty Computation and Secret Sharing (https://www.cambridge.org/core/books/secure-multiparty-computation-and-secret-sharing/4C2480B202905CE5370B2609F0C2A67A)
+
+- Yao’s Garbled Circuits: Recent Directions and Implementations (https://www.peteresnyder.com/static/papers/Peter_Snyder_-_Garbled_Circuits_WCP_2_column.pdf)
 
