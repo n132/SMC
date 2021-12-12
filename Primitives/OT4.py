@@ -55,7 +55,6 @@ def OT4_Sender(message,client):
         # encrypted data
         data = client.recv(3)
         assert(data == b"OT4")
-        #print("Sending ENCed list")
         enc= json.dumps(enc).encode()
         client.send(enc)
         return 1
