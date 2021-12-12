@@ -1,7 +1,6 @@
 from OT4 import *
-PORT = 6999
-from random import randint
 from GMW import *
+PORT =1025
 def X():#Xiang's solution
     while True:
         try:
@@ -11,7 +10,7 @@ def X():#Xiang's solution
 def XxX():
     s = socket.socket()
     host = socket.gethostname()
-    s.bind((host, 1025))
+    s.bind((host,PORT))
     s.listen(5)
     while True:
         client,addr = s.accept()

@@ -45,7 +45,6 @@ def garbleCircuit(cinfo, labels):
 
     output: a garbled circuit, keys for (0, 1) of output
     """
-
     gates = cinfo["gates"]
     gc = [] # output list
 
