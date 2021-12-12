@@ -30,15 +30,20 @@ Wrapper (to be added)
 - Bob evaluates the circuit and sends back the result
 
 2. GMW
-- Alice, Bob and Dealer build socket connect with each other
-- Alice and Bob perform Secret Sharing to share their inputs with each other
-- 
+- Initialization
+    - Alice, Bob and Dealer build socket connect with each other
+    - Alice and Bob perform Secret Sharing to share their inputs with each other
+- Evaluation
+    - Dealer sends requests to Alice and Bob to get necessary data
+    - Dealer evaluates the circuits 
+    - Alice and Bob get the final result from Dealer
 
 ## Details
 
 Function used to test the protocols: Equality function
 
 Encryption library: Fernet from Python Cryptography
+
 
 
 ## Reference
