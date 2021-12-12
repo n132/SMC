@@ -5,6 +5,7 @@ import json
 from os import close
 from random import choice
 from OT4 import *
+CIR = "./Gequal.json"
 def GMW_SPLITER(inputs):
     # input is a list of 0,1
     A = []
@@ -208,6 +209,94 @@ def evaluateClient(skt,cir,data,share):
         else:
             exit(1)
     return data['result']
+def dealer(skt):
+    # dealer will handler all the  
+    # get the circuit
+    while True:
+        GMWA = None
+        GMWB = None
+
+        s1 = socket.socket()
+        host = socket.gethostname()
+        s1.bind((host,2021))
+        s1.listen(5)
+        GMWA,addr = s1.accept()
+        
+        A = json.loads(GMWA.recv(1024))
+
+
+
+        s2 = socket.socket()
+        host = socket.gethostname()
+        s2.bind((host,2022))
+        s2.listen(5)
+        GMWB,addr = s2.accept()
+        B = json.loads(GMWB.recv(1024))
+
+        with open(CIR) as f:
+            data =f.read()
+        data = json.loads(data)
+        gates = data['gates']
+
+        pool = [-1]  * data['output'][0] 
+        for gate in gates:
+            if(gate['type']=="NOT"):
+                if(pool[gate['input'][0]]==-1):
+                    
+                else:
+                    pool[gate['output'][0]] = (pool[gate['input'][0]] +1 )%2
+            elif(gate['type']=="XOR"):
+                if( pool[gate['input'][0]] )
+            elif(gate['type']=="AND"):
+                pass
+        
+
+
+    # get people's share
+    # perform evaluate
+def evaluation(shares,host=None,port=None):
+    s = socket.socket()
+    host = host or socket.gethostname()
+    port = port or 2046
+    s.connect((host,port))
+    s.send(json.dumps(shares).encode())
+    res = s.recv(1024)
+    return res
+
+
+def GMWA(skt,inputs):
+    A1,B1 = GMW_SPLITER(inputs)
+    skt.send(b"n132-GMWX")
+    A2 = json.loads(skt.recv(1024))
+    skt.send(json.dumps(B1).encode())
+    shares = []
+    for x in range(len(A1)):
+        shares.append(A1[x] ^ A2[x])
+    data ={
+        "shares":shares,
+        "ID": "A"
+    }
+    res = evaluation(data,port = 2021)
+    return res
+
+
+
+def GMWB(skt,inputs):
+    A2,B2 = GMW_SPLITER(inputs)
+    if(b"n132-GMWX"==skt.recv(9)):
+        skt.send(json.dumps(A2).encode())
+        B1 = json.loads(skt.recv(1024))
+        shares=[]
+        for x in range(len(B1)):
+            shares.append(B1[x] ^ B2[x])
+        data ={
+            "shares":shares,
+            "ID": "B"
+        }
+        res =evaluation(shares,port = 2022)
+        return res
+    return -1
+
 def tableMaker(share):
     res = []
     for x in range(2):
@@ -221,3 +310,4 @@ if __name__ == '__main__':
         circuit = f.read()
     cir  = json.loads(circuit)
     evaluateServer(0,cir,[0,1],[1,2])
+
