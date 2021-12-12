@@ -1,0 +1,32 @@
+{
+
+	"a_inputs" : [0, 1, 2,  3,  4,  5,  6,  7],
+	"b_inputs" : [8, 9, 10, 11, 12, 13, 14, 15],
+	"output" : [32],
+	"gates" :[
+		{"id": 0, "type": "XOR" , "input": [0,8], "output":[16]},
+		{"id": 1 , "type": "XOR" , "input": [1,9], "output":[17]},
+		{"id": 2 , "type": "OR", "input": [16,17], "output":[18]},
+
+		{"id": 3, "type": "XOR", "input": [2,10], "output":[19]},
+		{"id": 4, "type": "XOR", "input": [3,11], "output":[20]},
+		{"id": 5, "type": "OR", "input": [19,20], "output":[21]},
+
+		{"id": 6, "type": "OR", "input": [18,21], "output":[22]},
+
+		{"id": 7, "type": "XOR" , "input": [4,12], "output":[23]},
+		{"id": 8 , "type": "XOR" , "input": [5,13], "output":[24]},
+		{"id": 9 , "type": "OR", "input": [23,24], "output":[25]},
+
+		{"id": 10, "type": "XOR", "input": [6,14], "output":[26]},
+		{"id": 11, "type": "XOR", "input": [7,15], "output":[27]},
+		{"id": 12, "type": "OR", "input": [26,27], "output":[28]},
+
+		{"id": 13, "type": "OR", "input": [25,28], "output":[29]},
+		{"id": 14, "type": "OR", "input": [22,29], "output":[30]},
+
+		{"id": 15, "type": "NOT", "input": [30], "output":[31]},
+		{"id": 16, "type": "NOT", "input": [31], "output":[32]}
+	],
+	"Describe" : "n132: it's a basic circuit to compare looped two-bit numbers (8-bit)"
+}

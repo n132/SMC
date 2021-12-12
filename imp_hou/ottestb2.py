@@ -1,3 +1,4 @@
+from cryptography.fernet import Fernet
 import cgarbl2
 import gcot
 import pickle
@@ -5,15 +6,43 @@ from utils import *
 
 import time
 
+def recvall(sock):
+    BUFF_SIZE = 4096 # 4 KiB
+    data = b''
+    while True:
+        part = sock.recv(BUFF_SIZE)
+        data += part
+        if len(part) < BUFF_SIZE:
+            # either 0 or end of data
+            break
+    return data
+
+
 # server sends secrets to client
 def ottestb():
+    testkeys = [Fernet.generate_key(), Fernet.generate_key()]
+    STARTFLAG = False
+    STARTTIME = 0.0
+    ENDTIME = 0.0
+
     with listen() as s:
-        while(True):
-            conn, addr = s.accept()
-            with conn: 
+        conn, addr = s.accept()
+        rounds = 0
+        with conn:
+            while(rounds < 5000):
+                print("round",(rounds+1))
+                if(not STARTFLAG):
+                    STARTFLAG = True
+                    STARTTIME = time.time()
                 print("connected by", addr)
-                tmp = gcot.OT_Sender([b'aaaaaaaaaa', b'bbbbbbbbbb'], conn)
-                conn.close()
+                tmp = gcot.OT_Sender(testkeys, conn)
+                rounds += 1
+                conn.recv(64)
+                print(tmp)
+        conn.close()
+    ENDTIME = time.time()
+    print("Time Elapsed:", (ENDTIME - STARTTIME))
+
 
 def cgarbltestb():
     STARTFLAG = False
@@ -31,7 +60,7 @@ def cgarbltestb():
                     STARTFLAG = True
                 
                 # receive stuff from alice 
-                a = conn.recv(256000)
+                a = recvall(conn)
                 """
                 {
                     "gc": {}
