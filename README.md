@@ -30,7 +30,8 @@ Wrapper (to be added)
 - Bob evaluates the circuit and sends back the result
 
 2. GMW
-- Alice, Bob, Dealer build socket connect with each other
+- Alice, Bob and Dealer build socket connect with each other
+- Alice and Bob perform Secret Sharing to share their inputs with each other
 - 
 
 ## Details
