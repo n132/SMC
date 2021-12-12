@@ -16,8 +16,8 @@ def cgarbtesta():
         data = f.read()
     
     cinfo = json.loads(data)
-    lb = circuitLabels(cinfo)
-    gc, rmap = garbleCircuit(cinfo, lb)
+    lb = iLabel(cinfo)
+    gc, rmap = gGarble(cinfo, lb)
 
     araw = [randint(0,1) for i in range(2)]
     ains = [lb[0][araw[0]], lb[1][araw[1]]] # grab keys for alice inputs
@@ -59,8 +59,8 @@ def multiintest():
         data = f.read()
     
     cinfo = json.loads(data)
-    lb = circuitLabels(cinfo)
-    gc, rmap = garbleCircuit(cinfo, lb)
+    lb = iLabel(cinfo)
+    gc, rmap = gGarble(cinfo, lb)
 
     araw = [randint(0,1) for i in range(len(cinfo["a_inputs"]))]
     ains = ['' for i in range(len(araw))]

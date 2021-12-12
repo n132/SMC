@@ -22,7 +22,7 @@ def genkey():
     return Fernet.generate_key()
 
 # Labels for each wire
-def circuitLabels(cinfo):
+def iLabel(cinfo):
     """
     cinfo: object with circuit info
 
@@ -38,10 +38,10 @@ def circuitLabels(cinfo):
         res.append( {0: genkey(), 1: genkey()} )
     return res
 
-def garbleCircuit(cinfo, labels):
+def gGarble(cinfo, labels):
     """
     cinfo: object with circuit info
-    labels: list of key tuples from circuitLabels
+    labels: list of key tuples from iLabel
 
     output: a garbled circuit, keys for (0, 1) of output
     """
@@ -90,7 +90,7 @@ def garbleCircuit(cinfo, labels):
 
     return gc, rmap # circuit, result_map
 
-def evalGate(w1, w2, table):
+def ggEval(w1, w2, table):
     """
     k0, k1, and a table
     """
@@ -111,7 +111,7 @@ def evalGate(w1, w2, table):
     print("gate eval failure")
     exit(1)
 
-def evalCircuit(gc, inputs, cinfo, results_map):
+def gcEval(gc, inputs, cinfo, results_map):
     """
     garbledcircuit: a garbled circuit object
     inputs: 
@@ -136,7 +136,7 @@ def evalCircuit(gc, inputs, cinfo, results_map):
             wire2 = inputs[cinfo["gates"][x["id"]]["input"][1]]
         
         output_idx = cinfo["gates"][x["id"]]["output"][0]
-        res = evalGate(wire1, wire2, x["garbledResult"])
+        res = ggEval(wire1, wire2, x["garbledResult"])
         inputs[output_idx] = res
 
     if(results_map[0] == inputs[cinfo["output"][0]]):
@@ -149,9 +149,9 @@ def test1():
         data = f.read()
     
     cinfo = json.loads(data)
-    lb = circuitLabels(cinfo)
+    lb = iLabel(cinfo)
     print("Labels:","\n",lb,"\n")
-    gc, rmap = garbleCircuit(cinfo, lb)
+    gc, rmap = gGarble(cinfo, lb)
     print("Garbled Circuit","\n",gc)
     print("Result map:","\n",rmap)
 
@@ -160,9 +160,9 @@ def test2():
         data = f.read()
     
     cinfo = json.loads(data)
-    lb = circuitLabels(cinfo)
+    lb = iLabel(cinfo)
     #--print("Labels:","\n",lb,"\n")
-    gc, rmap = garbleCircuit(cinfo, lb)
+    gc, rmap = gGarble(cinfo, lb)
     #--print("Garbled Circuit","\n",gc)
     #--print("Result map:","\n",rmap)
 
@@ -172,7 +172,7 @@ def test2():
         r = randint(0,1)
         pt.append(r)
         ins.append(lb[i][r])
-    res = evalCircuit(gc, ins, cinfo, rmap)
+    res = gcEval(gc, ins, cinfo, rmap)
     #print(res)
 
     real = (pt[0]^pt[2]) or (pt[1] ^ pt[3])

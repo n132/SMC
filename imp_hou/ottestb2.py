@@ -69,7 +69,7 @@ def cgarbltestb():
                 cinfo = amsg["cinfo"]
                 rmap = amsg["rmap"]
 
-                eval_result = cgarbl2.evalCircuit(gc, final_inputs, cinfo, rmap)
+                eval_result = cgarbl2.gcEval(gc, final_inputs, cinfo, rmap)
                 print("RESULT:",eval_result)
 
                 conn.sendall(eval_result.to_bytes((eval_result.bit_length() + 7 ) // 8, 'big'))
