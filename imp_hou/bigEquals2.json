@@ -1,0 +1,55 @@
+{
+
+	"a_inputs" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+	"b_inputs" : [16,17,18,19,20,21,22,23,24,25,26, 27, 28, 29, 30, 31],
+	"output" : [64],
+	"gates" :[
+		{"id": 0, "type": "XOR" , "input": [0,16], "output":[32]},
+		{"id": 1 , "type": "XOR" , "input": [1,17], "output":[33]},
+		{"id": 2 , "type": "OR", "input": [32,33], "output":[34]},
+
+		{"id": 3, "type": "XOR", "input": [2,18], "output":[35]},
+		{"id": 4, "type": "XOR", "input": [3,19], "output":[36]},
+		{"id": 5, "type": "OR", "input": [35,36], "output":[37]},
+
+		{"id": 6, "type": "OR", "input": [34,37], "output":[38]},
+
+		{"id": 7, "type": "XOR" , "input": [4,20], "output":[39]},
+		{"id": 8 , "type": "XOR" , "input": [5,21], "output":[40]},
+		{"id": 9 , "type": "OR", "input": [39,40], "output":[41]},
+
+		{"id": 10, "type": "XOR", "input": [6,22], "output":[42]},
+		{"id": 11, "type": "XOR", "input": [7,23], "output":[43]},
+		{"id": 12, "type": "OR", "input": [42,43], "output":[44]},
+
+		{"id": 13, "type": "OR", "input": [41,44], "output":[45]},
+		{"id": 14, "type": "OR", "input": [38,45], "output":[46]},
+		
+		
+		{"id": 15, "type": "XOR" , "input": [8,24], "output":[47]},
+		{"id": 16, "type": "XOR" , "input": [9,25], "output":[48]},
+		{"id": 17, "type": "OR", "input": [47,48], "output":[49]},
+
+		{"id": 18, "type": "XOR", "input": [10,26], "output":[50]},
+		{"id": 19, "type": "XOR", "input": [11,27], "output":[51]},
+		{"id": 20, "type": "OR", "input": [50,51], "output":[52]},
+
+		{"id": 21, "type": "OR", "input": [49,52], "output":[53]},
+
+		{"id": 22, "type": "XOR" , "input": [12,28], "output":[54]},
+		{"id": 23, "type": "XOR" , "input": [13,29], "output":[55]},
+		{"id": 24, "type": "OR", "input": [54,55], "output":[56]},
+
+		{"id": 25, "type": "XOR", "input": [14,30], "output":[57]},
+		{"id": 26, "type": "XOR", "input": [15,31], "output":[58]},
+		{"id": 27, "type": "OR", "input": [57,58], "output":[59]},
+
+		{"id": 28, "type": "OR", "input": [56,59], "output":[60]},
+		{"id": 29, "type": "OR", "input": [53,60], "output":[61]},
+
+		{"id": 30, "type": "OR", "input": [46,61], "output":[62]},
+		{"id": 31, "type": "NOT", "input": [62], "output":[63]},
+		{"id": 32, "type": "NOT", "input": [63], "output":[64]}
+	],
+	"Describe" : "n132: it's a basic circuit to compare looped two-bit numebrs (16-bit)"
+}

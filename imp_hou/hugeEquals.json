@@ -100,5 +100,5 @@
 		{"id": 65, "type": "NOT", "input": [67], "output":[68]},
 		{"id": 66, "type": "NOT", "input": [68], "output":[69]}
 	],
-	"Describe" : "n132: it's a basic circuit to compare looped two-bit numebrs (16 bits)"
+	"Describe" : "n132: it's a basic circuit to compare looped two-bit numebrs (32 bits)"
 }
