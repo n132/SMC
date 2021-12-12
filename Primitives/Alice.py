@@ -2,6 +2,7 @@ from OT4 import *
 PORT = 6999
 from random import randint
 from GMW import *
+
 def Alice_OT2():
     s = socket.socket()
     host = socket.gethostname()
@@ -27,7 +28,7 @@ def Alice_GMW():
     s.listen(5)
     while True:
         client,addr = s.accept()
-        res = GMW_Sender([1,0,1,0,1,1,1,1],client,"./Gbig_equal.json")
+        res = GMW_Sender([1,0,0,1,1,1,0,0],client,CIR)
         client.close()
         #print(res)
 if __name__ == '__main__':

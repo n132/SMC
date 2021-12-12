@@ -2,10 +2,8 @@
 # How to play any mental game, or a completeness theorem for protocols with honest majority
 # GMW 87
 import json
-from os import close
-from random import choice
 from OT4 import *
-CIR = "./Gequal.json"
+CIR = "./Gbig_equal.json"
 def GMW_SPLITER(inputs):
     # input is a list of 0,1
     A = []
@@ -131,171 +129,216 @@ def evaluateServer(skt,cir,data,share):
     # init data pool
     for _ in range(len(s_in)):
         pool[s_in[_]] = data[_]
-    for x in gates:
-        logic = x['type']
-        if(logic == 'NOT'):
-            if(pool[x['input'][0]]!=-1):#NOT_LOC
-                pool[x['output'][0]]= (pool[x['input'][0]]+1)%2
-            else:
-                NOX(skt,x['id'])
-        elif(logic == "XOR"):
-            if(pool[x['input'][0]]!=-1 and pool[x['input'][1]]!=-1):#XOR_LOC
-                pool[x['output'][0]]= pool[x['input'][0]] ^ pool[x['input'][1]]
-            elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):
-                pool[x['output'][0]] = XOR_Request(skt,x,share)
-            else:
-                NOX(skt,x['id'])
-        elif(logic == "AND"):
-            if(pool[x['input'][0]]!=-1 and pool[x['input'][1]]!=-1):#AND_LOC
-                pool[x['output'][0]]= pool[x['input'][0]] & pool[x['input'][1]]
-            elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):
-                pool[x['output'][0]]= AND_Request(skt,x,share)
-                #print("SHARE",share)
-            else:
-                NOX(skt,x['id'])
-        else:
-            exit(1)
-    data={
-        "result": pool[-1],
-        "id": 0x6999
-    }
-    skt.send(json.dumps(data).encode())
-    return pool[-1]
-def evaluateClient(skt,cir,data,share):
-    gates= cir['gates'] 
-    pool = [-1] * (cir['output'][0]+1)
-    c_in = cir['C-inputs']
-
-    for _ in range(len(c_in)):
-        pool[c_in[_]] = data[_]
     
-    while(1):
-        data = json.loads(skt.recv(1024))
-        if(data['id']==0x6999):
-            break
-        tmp = gates[data['id']]
-        if(data["type"]=="X"):
-            assert( [x for x in tmp["inputs"] if pool[x] == -1 ]==[])
-            #make sure we have all the inputs
-            if(tmp['type']=="NOT"):
-                pool[tmp['output'][0]]= (pool[tmp['input'][0]]+1)%2
-            elif(tmp['type']=="XOR"):
-                pool[tmp['output'][0]]= pool[tmp['input'][0]] ^ pool[tmp['input'][1]]
-            elif(tmp['type']=='AND'):
-                pool[tmp['output'][0]]= pool[tmp['input'][0]] & pool[tmp['input'][1]]
+    # connect with dealer
+    dealer = socket.socket()
+    host = socket.gethostname()
+    dealer.connect((host, 2021))
+    
+    with open(CIR) as f:
+        cir =f.read()
+    cir = json.loads(cir)
+    gates = cir['gates']
+    while(True):
+        data = json.loads(dealer.recv(1024))
+        id = data["id"]
+        if(id==-1):
+            res = data['result']
+            return res
+        x = gates[id]
+        if(data['type']=='X'):
+            if(x['type']=='NOT'):
+                if(pool[x['input'][0]]!=-1):
+                    pool[x['output'][0]] = (pool[x['input'][0]] +1 )%2
+                else:
+                    dealer.send(b"---")
+            elif(x['type']=='XOR'):
+                if(pool[x['input'][0]]!=-1 and pool[x['input'][1]]!=-1):
+                    pool[x['output'][0]]= pool[x['input'][0]] ^ pool[x['input'][1]]
+                    dealer.send(b"XxX")
+                elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):
+                    myshare = share[x['input'][0]] ^ share[x['input'][1]]
+                    dealer.send(b"YYY")
+                    
+                    if(dealer.recv(3)==b'YYY'):#confirm
+                        
+                        dealer.send(json.dumps(myshare).encode())
+                    else:
+                        exit(1)                    
+                else:
+                    dealer.send(b"---")
+            elif(x['type']=="AND"):
+                if(pool[x['input'][0]]!=-1 and pool[x['input'][1]]!=-1):
+                    pool[x['output'][0]]= pool[x['input'][0]] & pool[x['input'][1]]
+                    dealer.send(b"XxX")
+                elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):
+                    table = tableMaker([share[x['input'][0]],share[x['input'][1]]])
+                    alpha = randint(0,1)
+                    encTable = [_^alpha for _ in table]
+                    OT4_Sender(encTable,skt)
+                    dealer.send(b"YYY")
+                    if(dealer.recv(3)==b'YYY'):#confirm
+                        dealer.send(json.dumps(alpha).encode())
+                    else:
+                        exit(1)  
+                else:
+                    dealer.send(b"---")
             else:
                 exit(1)
-            skt.send(b"XxX")
-        elif(data['type']=='Y'):
-            if(tmp['type']=="XOR"):
-                myshare = share[ tmp['input'][0] ] ^ share[ tmp['input'][1] ]
-                req_y(myshare)
-                skt.send(b"XxX")
-            elif(tmp['type']=="AND"):
-                myshare = [share[tmp['input'][0]], share[tmp['input'][1]]]
-                table = tableMaker(myshare)
-                alpha = randint(0,1)
-                enc_table = [(x^alpha) for x in table]
-                OT4_Sender(enc_table,skt)             
-                #data = json.dumps(skt.recv(1024))
-                data = json.loads(skt.recv(1024))
-                data = data['id']
-                if(data==-1):
-                    req_y(alpha)
-                    skt.send(b"XxX")
-                else:
-                    exit(-1)
-
         else:
             exit(1)
-    return data['result']
-def dealer(skt):
-    # dealer will handler all the  
-    # get the circuit
-    while True:
-        GMWA = None
-        GMWB = None
+def evaluateClient(skt,cir,data,share):
+    assert(len(data)==len(cir['S-inputs']))
+    gates= cir['gates']
+    pool = [-1] * (cir['output'][0]+1)
+    s_in = cir['S-inputs']
+    # init data pool
+    for _ in range(len(s_in)):
+        pool[s_in[_]] = data[_]
 
-        s1 = socket.socket()
-        host = socket.gethostname()
-        s1.bind((host,2021))
-        s1.listen(5)
-        GMWA,addr = s1.accept()
-        
-        A = json.loads(GMWA.recv(1024))
+    # connect with dealer
+    dealer = socket.socket()
+    host = socket.gethostname()
+    dealer.connect((host, 2022))
 
-
-
-        s2 = socket.socket()
-        host = socket.gethostname()
-        s2.bind((host,2022))
-        s2.listen(5)
-        GMWB,addr = s2.accept()
-        B = json.loads(GMWB.recv(1024))
-
-        with open(CIR) as f:
-            data =f.read()
-        data = json.loads(data)
-        gates = data['gates']
-
-        pool = [-1]  * data['output'][0] 
-        for gate in gates:
-            if(gate['type']=="NOT"):
-                if(pool[gate['input'][0]]==-1):
-                    
+    with open(CIR) as f:
+        cir =f.read()
+    cir = json.loads(cir)
+    gates = cir['gates']
+    while(True):
+        data = json.loads(dealer.recv(1024))
+        id = data["id"]
+        if(id==-1):
+            res = data['result']
+            return res
+        x = gates[id]
+        if(data['type']=='X'):
+            if(x['type']=='NOT'):
+                if(pool[x['input'][0]]!=-1):
+                    pool[x['output'][0]] = (pool[x['input'][0]] +1 )%2
                 else:
-                    pool[gate['output'][0]] = (pool[gate['input'][0]] +1 )%2
-            elif(gate['type']=="XOR"):
-                if( pool[gate['input'][0]] )
-            elif(gate['type']=="AND"):
-                pass
+                    dealer.send(b"---")
+            elif(x['type']=='XOR'):
+                if(pool[x['input'][0]]!=-1 and pool[x['input'][1]]!=-1):
+                    pool[x['output'][0]]= pool[x['input'][0]] ^ pool[x['input'][1]]
+                    dealer.send(b"XxX")
+                elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):
+                    print(1)
+                    myshare = share[x['input'][0]] ^ share[x['input'][1]]
+                    dealer.send(b"YYY")
+                    
+                    if(dealer.recv(3)==b'YYY'):#confirm
+                        dealer.send(json.dumps(myshare).encode())
+                    else:
+                        exit(1)                    
+                else:
+                    dealer.send(b"---")
+            elif(x['type']=="AND"):
+                if(pool[x['input'][0]]!=-1 and pool[x['input'][1]]!=-1):
+                    pool[x['output'][0]]= pool[x['input'][0]] & pool[x['input'][1]]
+                    dealer.send(b"XxX")
+                elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):
+                    choice = (share[x['input'][0]]*2)+share[x['input'][1]]
+                    enc_res = OT4_Receiver(choice,skt)
+                    dealer.send(json.dumps(enc_res))
+                    dealer.send(b"YYY")
+                    if(dealer.recv(3)==b'YYY'):#confirm
+                        dealer.send(json.dumps(enc_res).encode())
+                    else:
+                        exit(1)
+                else:
+                    dealer.send(b"---")
+            else:
+                exit(1)
+        else:
+            exit(1)
+# def dealer(skt):
+#     # dealer will handler all the  
+#     # get the circuit
+#     while True:
+#         GMWA = None
+#         GMWB = None
+
+#         s1 = socket.socket()
+#         host = socket.gethostname()
+#         s1.bind((host,2021))
+#         s1.listen(5)
+#         GMWA,addr = s1.accept()
+        
+#         A = json.loads(GMWA.recv(1024))
+
+
+
+#         s2 = socket.socket()
+#         host = socket.gethostname()
+#         s2.bind((host,2022))
+#         s2.listen(5)
+#         GMWB,addr = s2.accept()
+#         B = json.loads(GMWB.recv(1024))
+
+#         with open(CIR) as f:
+#             data =f.read()
+#         data = json.loads(data)
+#         gates = data['gates']
+
+#         pool = [-1]  * data['output'][0] 
+#         for gate in gates:
+#             if(gate['type']=="NOT"):
+#                 if(pool[gate['input'][0]]==-1):
+                    
+#                 else:
+#                     pool[gate['output'][0]] = (pool[gate['input'][0]] +1 )%2
+#             elif(gate['type']=="XOR"):
+#                 if( pool[gate['input'][0]] )
+#             elif(gate['type']=="AND"):
+#                 pass
         
 
 
     # get people's share
     # perform evaluate
-def evaluation(shares,host=None,port=None):
-    s = socket.socket()
-    host = host or socket.gethostname()
-    port = port or 2046
-    s.connect((host,port))
-    s.send(json.dumps(shares).encode())
-    res = s.recv(1024)
-    return res
+# def evaluation(shares,host=None,port=None):
+#     s = socket.socket()
+#     host = host or socket.gethostname()
+#     port = port or 2046
+#     s.connect((host,port))
+#     s.send(json.dumps(shares).encode())
+#     res = s.recv(1024)
+#     return res
 
 
-def GMWA(skt,inputs):
-    A1,B1 = GMW_SPLITER(inputs)
-    skt.send(b"n132-GMWX")
-    A2 = json.loads(skt.recv(1024))
-    skt.send(json.dumps(B1).encode())
-    shares = []
-    for x in range(len(A1)):
-        shares.append(A1[x] ^ A2[x])
-    data ={
-        "shares":shares,
-        "ID": "A"
-    }
-    res = evaluation(data,port = 2021)
-    return res
+# def GMWA(skt,inputs):
+#     A1,B1 = GMW_SPLITER(inputs)
+#     skt.send(b"n132-GMWX")
+#     A2 = json.loads(skt.recv(1024))
+#     skt.send(json.dumps(B1).encode())
+#     shares = []
+#     for x in range(len(A1)):
+#         shares.append(A1[x] ^ A2[x])
+#     data ={
+#         "shares":shares,
+#         "ID": "A"
+#     }
+#     res = evaluation(data,port = 2021)
+#     return res
 
 
 
-def GMWB(skt,inputs):
-    A2,B2 = GMW_SPLITER(inputs)
-    if(b"n132-GMWX"==skt.recv(9)):
-        skt.send(json.dumps(A2).encode())
-        B1 = json.loads(skt.recv(1024))
-        shares=[]
-        for x in range(len(B1)):
-            shares.append(B1[x] ^ B2[x])
-        data ={
-            "shares":shares,
-            "ID": "B"
-        }
-        res =evaluation(shares,port = 2022)
-        return res
-    return -1
+# def GMWB(skt,inputs):
+#     A2,B2 = GMW_SPLITER(inputs)
+#     if(b"n132-GMWX"==skt.recv(9)):
+#         skt.send(json.dumps(A2).encode())
+#         B1 = json.loads(skt.recv(1024))
+#         shares=[]
+#         for x in range(len(B1)):
+#             shares.append(B1[x] ^ B2[x])
+#         data ={
+#             "shares":shares,
+#             "ID": "B"
+#         }
+#         res =evaluation(shares,port = 2022)
+#         return res
+#     return -1
 
 def tableMaker(share):
     res = []

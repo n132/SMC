@@ -1,5 +1,6 @@
 from OT4 import *
 from GMW import *
+from Dealer import *
 PORT =1025
 def X():#Xiang's solution
     while True:
@@ -17,4 +18,4 @@ def XxX():
         GMW_X(client)
         client.close()
 if __name__ == "__main__":
-    XxX()
+    dealer()

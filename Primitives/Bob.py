@@ -48,7 +48,7 @@ if __name__ == "__main__":
             tmp.append(randint(0,1))
         res=Bob_GMW(tmp)
         #print(tmp)
-        oracle = (tmp ==[1,0,1,0,1,1,1,1])
+        oracle = (tmp ==[1,0,0,1,1,1,0,0])
         #print(oracle)
         #print(res)
         if(res== oracle):
