@@ -4,12 +4,18 @@ import pickle
 from random import randint
 from utils import *
 
-""" # client receives secrets from server
+# client receives secrets from server
 def ottest1():
     s = connect()
-    res = gcot.OT_Receiver(0, s)
-    print(res)
-
+    rounds = 0
+    while(rounds < 5000):
+        choice = randint(0,1)
+        res = gcot.OT_Receiver(choice, s)
+        s.sendall(b'continue')
+        rounds += 1
+        print(res)
+    #print(res)
+"""
 # cgarbl socket test
 def cgarbtesta():
     with open("./bigEquals.json") as f:
@@ -55,7 +61,7 @@ def cgarbtesta():
 
 def multiintest():
     # cgarbl socket test
-    with open("./bigEquals2.json") as f:
+    with open("./equal8.json") as f:
         data = f.read()
     
     cinfo = json.loads(data)
@@ -103,6 +109,6 @@ def multiintest():
     print("RESULT:", result)
 
 if(__name__ == "__main__"):
-    # ottest1()
+    #ttest1()
     for i in range(1000):
         multiintest()

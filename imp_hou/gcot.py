@@ -1,7 +1,7 @@
-import crypto
+import Crypto
 import sys
-sys.modules['Crypto'] = crypto
-from crypto.Util.number import *
+sys.modules['crypto'] = Crypto
+from Crypto.Util.number import *
 from utils import *
 from random import randint
 BigPrime = 4776913109852041418248056622882488319
