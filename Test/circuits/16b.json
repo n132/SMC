@@ -1,0 +1,62 @@
+{
+	"S-inputs": [0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30],
+	"C-inputs": [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31],
+	"output" : [78],
+	"gates" :[
+		{"id": 0, "type": "XOR" , "input": [0,1], "output":[32]},
+		{"id": 1, "type": "XOR" , "input": [2,3], "output":[33]},
+		{"id": 2, "type": "XOR" , "input": [4,5], "output":[34]},
+		{"id": 3, "type": "XOR" , "input": [6,7], "output":[35]},
+		{"id": 4, "type": "XOR" , "input": [8,9], "output":[36]},
+		{"id": 5, "type": "XOR" , "input": [10,11], "output":[37]},
+		{"id": 6, "type": "XOR" , "input": [12,13], "output":[38]},
+		{"id": 7, "type": "XOR" , "input": [14,15], "output":[39]},
+		{"id": 8, "type": "XOR" , "input": [16,17], "output":[40]},
+		{"id": 9, "type": "XOR" , "input": [18,19], "output":[41]},
+		{"id": 10, "type": "XOR" , "input": [20,21], "output":[42]},
+		{"id": 11, "type": "XOR" , "input": [22,23], "output":[43]},
+		{"id": 12, "type": "XOR" , "input": [24,25], "output":[44]},
+		{"id": 13, "type": "XOR" , "input": [26,27], "output":[45]},
+		{"id": 14, "type": "XOR" , "input": [28,29], "output":[46]},
+		{"id": 15, "type": "XOR" , "input": [30,31], "output":[47]},
+	
+		{"id":16, "type": "NOT", "input": [32], "output":[48]},
+		{"id":17, "type": "NOT", "input": [33], "output":[49]},
+		{"id":18, "type": "NOT", "input": [34], "output":[50]},
+		{"id":19, "type": "NOT", "input": [35], "output":[51]},
+		{"id":20, "type": "NOT", "input": [36], "output":[52]},
+		{"id":21, "type": "NOT", "input": [37], "output":[53]},
+		{"id":22, "type": "NOT", "input": [38], "output":[54]},
+		{"id":23, "type": "NOT", "input": [39], "output":[55]},
+		{"id":24, "type": "NOT", "input": [40], "output":[56]},
+		{"id":25, "type": "NOT", "input": [41], "output":[57]},
+		{"id":26, "type": "NOT", "input": [42], "output":[58]},
+		{"id":27, "type": "NOT", "input": [43], "output":[59]},
+		{"id":28, "type": "NOT", "input": [44], "output":[60]},
+		{"id":29, "type": "NOT", "input": [45], "output":[61]},
+		{"id":30, "type": "NOT", "input": [46], "output":[62]},
+		{"id":31, "type": "NOT", "input": [47], "output":[63]},
+
+		{"id":32, "type": "AND", "input": [48,49], "output":[64]},
+		{"id":33, "type": "AND", "input": [50,51], "output":[65]},
+		{"id":34, "type": "AND", "input": [52,53], "output":[66]},
+		{"id":35, "type": "AND", "input": [54,55], "output":[67]},
+		{"id":36, "type": "AND", "input": [56,57], "output":[68]},
+		{"id":37, "type": "AND", "input": [58,59], "output":[69]},
+		{"id":38, "type": "AND", "input": [60,61], "output":[70]},
+		{"id":39, "type": "AND", "input": [62,63], "output":[71]},
+
+		{"id":40, "type": "AND", "input": [64,65], "output":[72]},
+		{"id":41, "type": "AND", "input": [66,67], "output":[73]},
+		{"id":42, "type": "AND", "input": [68,69], "output":[74]},
+		{"id":43, "type": "AND", "input": [70,71], "output":[75]},
+
+        {"id":44, "type": "AND", "input": [72,73], "output":[76]},
+        {"id":45, "type": "AND", "input": [74,75], "output":[77]},
+
+        {"id":46, "type": "AND", "input": [76,77], "output":[78]}
+
+
+	],
+	"Describe" : "n132: compare 8-bit numebrs"
+}
