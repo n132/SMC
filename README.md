@@ -20,12 +20,14 @@ This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Pa
     - Expand 1 in 2 OT to 1 in 4 OT
 ## Usage
 ### Yao Garbled Circuit
-Make sure gmpy2 is installed: https://pypi.org/project/gmpy2/
+Make sure gmpy2 is installed from https://pypi.org/project/gmpy2/
+
 Make sure the module "pycryptodome" is installed.
 
 Python Usage:
 running the test scripts will automatically run 1000 rounds with random inputs.
 
+run ottestb2.py first, then ottesta2.py separately. A will garble circuits for B to compute.
 ```
 python3 ottestb2.py
 python3 ottesta2.py
