@@ -1,13 +1,11 @@
 import socket
 from utils import *
 BigPrime = 4776913109852041418248056622882488319
-
 def OT_Encrypt(g,p,pk,s):
     r=randint(1,p-1)
     tmp= n2b(pow(g,r,p))
     tmp2 = bytes_to_long(hash( n2b( pow(pk,r,p) ) )) ^ bytes_to_long(s)
     return tmp+b'-'+n2b(tmp2)
-
 def OT_Receiver(choice,server):
     m= server.recv(8)
     if(m==b'n132-OT2'):
@@ -33,7 +31,6 @@ def OT_Receiver(choice,server):
         return res
     else:
         return -1
-
 def OT_Sender(message,client):
     try:
         client.send(b"n132-OT2")

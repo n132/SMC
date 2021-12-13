@@ -54,7 +54,7 @@ def dealer():
             "result": pool[-1],
             "id": -1
         }
-        print(pool)
+        #print(pool)
         GMWA.send(json.dumps(res).encode())
         GMWB.send(json.dumps(res).encode())
         GMWA.close()
@@ -62,7 +62,6 @@ def dealer():
 def die(s):
     print("[!] ",s)
     exit(1)
-
 def NOX(skts, id):
     data ={
         "type": "X",
@@ -82,14 +81,4 @@ def NOX(skts, id):
             n2 = json.loads(skts[1].recv(1024))
             #print(n1,n2)
             return n1^n2
-    exit(1)
-def NOY(skts, id):
-    data ={
-        "type": "Y",
-        "id": id
-    }
-    for skt in skts:
-        skt.send(json.dumps(data))
-        if(skt.recv(3)==b"XxX"):
-            return 1
     exit(1)

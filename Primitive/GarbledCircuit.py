@@ -132,6 +132,3 @@ if __name__ == "__main__":
     for x in range(1000):  
         ct +=tester()
     print(ct/1000)
-    #wire.append(res['KYES'][:2])
-    #wire.append(res['KYES'][2:4])
-    #output = res['KYES'][4:]

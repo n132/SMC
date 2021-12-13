@@ -26,7 +26,6 @@ def OT4_Encrypt(S,m):
         S[1] ^ S[5] ^ m[3]
     )
     return res
-
 def OT4_Sender(message,client):
     S = SGnenerator()
     enc = OT4_Encrypt(S,message)
@@ -60,8 +59,7 @@ def OT4_Sender(message,client):
         return 1
     except:
         print("[!] Disconnect: OT4-3")
-        return -1
-    
+        return -1 
 def OT4_Receiver(choice,server):
     assert(choice<4 and choice>=0)
     c = [choice//2,choice%2 ] 
@@ -95,7 +93,5 @@ def OT4_Receiver(choice,server):
         server.close()
         return -1
 # 1-2 OT is reconstructed from the OT I build several days ago-
-
-
 if __name__ == '__main__':
     OT4_Sender()
