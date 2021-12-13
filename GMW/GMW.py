@@ -48,7 +48,11 @@ def GMW_Reveiver(inputs,skt):# Bob
         cir = json.loads(skt.recv(4096))
         skt.send(b"go!")
 
-        share = B1+B2
+        B = B1+B2
+        share = [0] * len(B)
+        order = cir['S-inputs'] +cir['C-inputs']
+        for x in range(len(B)):
+            share[order[x]] = B[x]
         res = evaluateClient(skt,cir,inputs,share)
         return res
     else:
@@ -69,7 +73,12 @@ def GMW_Sender(inputs,skt,cir=None):# Alice
     # send the data to the calculator-x
     if(b"go!" != skt.recv(3)):
         exit(1)
-    share = A1 + A2
+    A = A1 +A2
+    share = [0] * len(A)
+    order = circuit['S-inputs'] +circuit['C-inputs']
+    for x in range(len(A)):
+        share[order[x]] = A[x]
+    
     res = evaluateServer(skt,circuit,inputs,share)
     return res
 def req_x(num,skt,id):
