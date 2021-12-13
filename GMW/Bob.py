@@ -61,5 +61,7 @@ if __name__ =='__main__':
         inputs = json.loads(sys.argv[1])
         #print(res)
         print("[*] Running Circuit: ",CIR)
+        print("[*] Input: ",inputs)
+
         res=Bob_GMW(inputs)
         print("[+] The result is ",res)

@@ -22,13 +22,25 @@ This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Pa
 
 Wrapper (to be added)
 
+
+
+### GMW
+
+Usage:
+python3 Alice.py [inputs]
+
+python3 Bob.py [inputs]
+
+python3 David.py
+
+Example:
 ```
 # Terminal 1
-python .\Alice.py
+python .\Alice.py [0,1,1,0,1,1,1,0]
 # Terminal 2
-python .\Dealer.py
+python .\David.py
 # Terminal 3
-python .\Bob.py
+python Bob.py [0,1,1,0,1,1,1,0]
 ```
 
 ## Communication Procedure Intro

@@ -1,6 +1,6 @@
 from OT4 import *
 from GMW import *
-
+import sys
 PORT = 6999
 def Alice_OT2():
     s = socket.socket()
@@ -43,6 +43,7 @@ if __name__ == "__main__":
         inputs = json.loads(sys.argv[1])
         #print(res)
         print("[*] Running Circuit: ",CIR)
+        print("[*] Input: ",inputs)
         res=Alice_GMW(inputs)
         print("[+] The result is ",res)
 #Get-Process -Name "python" | Stop-Process
