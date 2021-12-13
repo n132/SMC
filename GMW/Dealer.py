@@ -1,10 +1,10 @@
 import socket
 import json
 from GMW import CIR
+DEBUG = 1
 def dealer():
-    # dealer will handler all the  
+    # dealer will handler all the
     # get the circuit
-    
     host = socket.gethostname()
     s1 = socket.socket()
     s2 = socket.socket()
@@ -25,7 +25,8 @@ def dealer():
         
         pool = [-1]  * (data['output'][0]+1)
         for x in gates:
-            print(x)
+            if(DEBUG):
+                print("[=]",x)
             if(x['type']=="NOT"):
                 if(pool[x['input'][0]]!=-1):
                     pool[x['output'][0]] = (pool[x['input'][0]] +1 )%2
@@ -78,7 +79,7 @@ def NOX(skts, id):
             assert(skts[1].recv(3)==b"YYY")
             skts[1].send(b"YYY")
             n2 = json.loads(skts[1].recv(1024))
-            print(n1,n2)
+            #print(n1,n2)
             return n1^n2
     exit(1)
 def NOY(skts, id):
