@@ -33,7 +33,6 @@ def GMW_X(skt):# x's solutiin: a untrusted third party could help calculation
     if(n1==-1 or n2 ==-1):
         exit(1)
     res = n1 ^ n2
-    #print(n1,n2)
     skt.send(str(res).encode())
     skt.close()
     return 1   
@@ -116,9 +115,7 @@ def AND_Request(skt,gate,share):
     }
     skt.send(json.dumps(data).encode())
     choice = (share[gate['input'][0]]*2)+share[gate['input'][1]]
-    #print("Choice",choice)
     res = OT4_Receiver(choice,skt)
-    #print("res",res)
     res = req_x(res,skt,-1)
     return res 
 def evaluateServer(skt,cir,data,share):
@@ -223,7 +220,6 @@ def evaluateClient(skt,cir,data,share):
                     pool[x['output'][0]]= pool[x['input'][0]] ^ pool[x['input'][1]]
                     dealer.send(b"XxX")
                 elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):
-                    print(1)
                     myshare = share[x['input'][0]] ^ share[x['input'][1]]
                     dealer.send(b"YYY")
                     
