@@ -19,21 +19,22 @@ This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Pa
 - Oblivious Transfer
     - Expand 1 in 2 OT to 1 in 4 OT
 ## Usage
-### Yao Garbled Circuit
+
 Make sure gmpy2 is installed from https://pypi.org/project/gmpy2/
 
 Make sure the module "pycryptodome" is installed.
 
+### Yao's Protocol
+
 Python Usage:
-running the test scripts will automatically run 1000 rounds with random inputs.
 
-run ottestb2.py first, then ottesta2.py separately. A will garble circuits for B to compute.
+run Alice.py first, then Bob.py separately. A will garble circuits for B to compute.
 ```
-python3 ottestb2.py
-python3 ottesta2.py
+python3 Alice.py
+python3 Bob.py
 ```
 
-### GMW
+### GMW Protocol
 
 Usage:
 python3 Alice.py [inputs]
