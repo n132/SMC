@@ -1,6 +1,6 @@
 import socket
 import json
-CIR = "./Gequal.json"
+from GMW import CIR
 def dealer():
     # dealer will handler all the  
     # get the circuit
@@ -37,7 +37,6 @@ def dealer():
                 elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):#half
                     die("Invalid Circuit")
                     #NOY([GMWA,GMWB],x['id'])
-                    #pool[x['output'][0]] = XOR_Request([GMWA,GMWB],x,share)
                 else:
                     tmp = NOX([GMWA,GMWB],x['id'])
                     pool[x['output'][0]] = tmp 
@@ -47,7 +46,6 @@ def dealer():
                 elif(pool[x['input'][0]]!=-1 or pool[x['input'][1]]!=-1):#half
                     die("Invalid Circuit")
                     #NOY([GMWA,GMWB],x['id'])
-                    #pool[x['output'][0]]= AND_Request([GMWA,GMWB],x,share)
                 else:
                     tmp = NOX([GMWA,GMWB],x['id'])
                     pool[x['output'][0]] = tmp 
@@ -62,10 +60,7 @@ def dealer():
 def die(s):
     print("[!] ",s)
     exit(1)
-def XOR_Request(skts,gate,share):
-    pass
-def AND_Request(skts,gate,share):
-    pass
+
 def NOX(skts, id):
     data ={
         "type": "X",

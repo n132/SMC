@@ -35,3 +35,5 @@ if __name__ == '__main__':
     #Alice_OT2()
     #Alice_OT4()
     Alice_GMW()
+
+#Get-Process -Name "python" | Stop-Process

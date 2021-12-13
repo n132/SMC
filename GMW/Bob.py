@@ -1,6 +1,7 @@
 from os import times
 from OT4 import *
 from GMW import *
+import sys
 PORT = 6999
 def Bob_OT2(cmd):
     s = socket.socket()
@@ -38,7 +39,7 @@ if __name__ != "__main__":
         if(test[exp] != Bob_OT4(exp)):
             ct +=1
     print((1000-ct)/1000)
-if __name__ == "__main__":
+if __name__ != "__main__":
     ct = 0
     import time
     t = time.time()
@@ -47,11 +48,18 @@ if __name__ == "__main__":
         for y in range(8):
             tmp.append(randint(0,1))
         res=Bob_GMW(tmp)
-        #print(tmp)
         oracle = (tmp ==[1,0,0,1,1,1,0,0])
-        #print(oracle)
-        #print(res)
         if(res== oracle):
             ct +=1
     print(time.time()-t)
     print(ct)
+if __name__ =='__main__':
+    if(len(sys.argv)!=2):
+        print("[*] Usage: python3 Bob.py [inputs]")
+        print("[*] Example: python3 Bob.py [0,1,1,0,1,1,1,0]")
+    else:
+        inputs = json.loads(sys.argv[1])
+        #print(res)
+        print("[*] Running Circuit: ",CIR)
+        res=Bob_GMW(inputs)
+        print("[+] The result is ",res)

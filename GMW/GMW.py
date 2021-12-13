@@ -3,7 +3,7 @@
 # GMW 87
 import json
 from OT4 import *
-CIR = "./Gbig_equal.json"
+CIR = "./circuits/Gbig_equal.json"
 def GMW_SPLITER(inputs):
     # input is a list of 0,1
     A = []
