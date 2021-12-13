@@ -22,6 +22,15 @@ This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Pa
 
 Wrapper (to be added)
 
+```
+# Terminal 1
+python .\Alice.py
+# Terminal 2
+python .\Dealer.py
+# Terminal 3
+python .\Bob.py
+```
+
 ## Communication Procedure Intro
 
 1. Yao's Garbled Circuit
@@ -44,9 +53,12 @@ Function used to test the protocols: Equality function
 
 Encryption library: Fernet from Python Cryptography
 
-OT2: Bellare-Micali protocol
+OT2: [Bellare-Micali protocol](https://crypto.stanford.edu/pbc/notes/crypto/ot.html) & [Implementation](./GMW/OT2.py)
 
-Cyclic Group: [Details](./Yao/utils.py)
+OT4: Combine 3 OT2 & [Implementation](./GMW/OT4.py)
+
+Cyclic Group: [CyclicGroup](./Yao/utils.py)
+
 
 ## Reference
 
@@ -65,3 +77,5 @@ Cyclic Group: [Details](./Yao/utils.py)
 - Financial Cryptographyand Data Security (https://link.springer.com/content/pdf/10.1007%2F978-3-642-39884-1.pdf)
 
 - Cyclic Group (https://github.com/ojroques/garbled-circuit)
+
+- Oblivious Transfer (https://crypto.stanford.edu/pbc/notes/crypto/ot.html)
