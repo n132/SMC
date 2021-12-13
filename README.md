@@ -19,9 +19,6 @@ This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Pa
 - Oblivious Transfer
     - Expand 1 in 2 OT to 1 in 4 OT
 ## Usage
-
-Wrapper (to be added)
-
 ### Yao Garbled Circuit
 Make sure gmpy2 is installed: https://pypi.org/project/gmpy2/
 Make sure the module "pycryptodome" is installed.
