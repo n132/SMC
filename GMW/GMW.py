@@ -12,30 +12,6 @@ def GMW_SPLITER(inputs):
         A.append(randint(0,1))
         B.append(A[-1]^x)
     return A,B
-def ReceiveANum(client):
-    try:
-        num= int(client.recv(1024))
-        return num
-    except:
-        return -1
-def GMW_X(skt):# x's solutiin: a untrusted third party could help calculation
-    #skt.send(b"X1")
-    n1 = ReceiveANum(skt)
-    s = socket.socket()
-    host = socket.gethostname()
-    s.bind((host, 1026))
-    s.listen(5)
-    
-    skt2,addr = s.accept()
-    #skt2.send(b"X2")
-    n2 = ReceiveANum(skt2)
-    skt2.close()
-    if(n1==-1 or n2 ==-1):
-        exit(1)
-    res = n1 ^ n2
-    skt.send(str(res).encode())
-    skt.close()
-    return 1   
 def GMW_Reveiver(inputs,skt):# Bob
     A2,B2 = GMW_SPLITER(inputs)
     if(skt.recv(8)==b"n132-GMW"):
@@ -47,7 +23,6 @@ def GMW_Reveiver(inputs,skt):# Bob
         # receive the circuit
         cir = json.loads(skt.recv(4096))
         skt.send(b"go!")
-
         B = B1+B2
         share = [0] * len(B)
         order = cir['S-inputs'] +cir['C-inputs']
@@ -81,53 +56,6 @@ def GMW_Sender(inputs,skt,cir=None):# Alice
     
     res = evaluateServer(skt,circuit,inputs,share)
     return res
-def req_x(num,skt,id):
-    s = socket.socket()
-    host = socket.gethostname()
-    s.connect((host, 1025))
-    s.send(str(num).encode())
-    data ={
-        "type":"Y",
-        "id":id
-    }
-    # request client
-    data = json.dumps(data).encode()
-    skt.send(data)
-    if(skt.recv(3)!=b"XxX"):
-        exit(1)
-    res = int(s.recv(1024))
-    return res
-def req_y(myshare):
-    s = socket.socket()
-    host = socket.gethostname()
-    s.connect((host, 1026))
-    s.send(str(myshare).encode())
-    s.close()
-    return 1
-def XOR_Request(skt,gate,share):
-    myshare = share[gate['input'][0]] ^ share[gate['input'][1]]
-    # request X + request Client 
-    res = req_x(myshare,skt,gate['id'])
-    return res
-def NOX(skt,id):
-    data ={
-        "type": "X",
-        "id": id
-    }
-    skt.send(json.dumps(data))
-    if(skt.recv(3)!=b"XxX"):
-        exit(1)
-    return 1
-def AND_Request(skt,gate,share):
-    data={
-        "type": "Y",
-        "id": gate['id']
-    }
-    skt.send(json.dumps(data).encode())
-    choice = (share[gate['input'][0]]*2)+share[gate['input'][1]]
-    res = OT4_Receiver(choice,skt)
-    res = req_x(res,skt,-1)
-    return res 
 def evaluateServer(skt,cir,data,share):
     assert(len(data)==len(cir['S-inputs']))
     gates= cir['gates']
@@ -258,94 +186,6 @@ def evaluateClient(skt,cir,data,share):
                 exit(1)
         else:
             exit(1)
-# def dealer(skt):
-#     # dealer will handler all the  
-#     # get the circuit
-#     while True:
-#         GMWA = None
-#         GMWB = None
-
-#         s1 = socket.socket()
-#         host = socket.gethostname()
-#         s1.bind((host,2021))
-#         s1.listen(5)
-#         GMWA,addr = s1.accept()
-        
-#         A = json.loads(GMWA.recv(1024))
-
-
-
-#         s2 = socket.socket()
-#         host = socket.gethostname()
-#         s2.bind((host,2022))
-#         s2.listen(5)
-#         GMWB,addr = s2.accept()
-#         B = json.loads(GMWB.recv(1024))
-
-#         with open(CIR) as f:
-#             data =f.read()
-#         data = json.loads(data)
-#         gates = data['gates']
-
-#         pool = [-1]  * data['output'][0] 
-#         for gate in gates:
-#             if(gate['type']=="NOT"):
-#                 if(pool[gate['input'][0]]==-1):
-                    
-#                 else:
-#                     pool[gate['output'][0]] = (pool[gate['input'][0]] +1 )%2
-#             elif(gate['type']=="XOR"):
-#                 if( pool[gate['input'][0]] )
-#             elif(gate['type']=="AND"):
-#                 pass
-        
-
-
-    # get people's share
-    # perform evaluate
-# def evaluation(shares,host=None,port=None):
-#     s = socket.socket()
-#     host = host or socket.gethostname()
-#     port = port or 2046
-#     s.connect((host,port))
-#     s.send(json.dumps(shares).encode())
-#     res = s.recv(1024)
-#     return res
-
-
-# def GMWA(skt,inputs):
-#     A1,B1 = GMW_SPLITER(inputs)
-#     skt.send(b"n132-GMWX")
-#     A2 = json.loads(skt.recv(1024))
-#     skt.send(json.dumps(B1).encode())
-#     shares = []
-#     for x in range(len(A1)):
-#         shares.append(A1[x] ^ A2[x])
-#     data ={
-#         "shares":shares,
-#         "ID": "A"
-#     }
-#     res = evaluation(data,port = 2021)
-#     return res
-
-
-
-# def GMWB(skt,inputs):
-#     A2,B2 = GMW_SPLITER(inputs)
-#     if(b"n132-GMWX"==skt.recv(9)):
-#         skt.send(json.dumps(A2).encode())
-#         B1 = json.loads(skt.recv(1024))
-#         shares=[]
-#         for x in range(len(B1)):
-#             shares.append(B1[x] ^ B2[x])
-#         data ={
-#             "shares":shares,
-#             "ID": "B"
-#         }
-#         res =evaluation(shares,port = 2022)
-#         return res
-#     return -1
-
 def tableMaker(share):
     res = []
     for x in range(2):
@@ -353,10 +193,6 @@ def tableMaker(share):
             tmp = (x ^ share[0]) & (y ^ share[1])
             res.append(tmp)
     return res
-
 if __name__ == '__main__':
-    with open("./Gequal.json") as f:
-        circuit = f.read()
-    cir  = json.loads(circuit)
-    evaluateServer(0,cir,[0,1],[1,2])
+    pass
 
