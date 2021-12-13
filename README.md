@@ -22,7 +22,17 @@ This repo contains our implemenation of two protocols in SMC/MPC(Secure Multi-Pa
 
 Wrapper (to be added)
 
+### Yao Garbled Circuit
+Make sure gmpy2 is installed: https://pypi.org/project/gmpy2/
+Make sure the module "pycryptodome" is installed.
 
+Python Usage:
+running the test scripts will automatically run 1000 rounds with random inputs.
+
+```
+python3 ottestb2.py
+python3 ottesta2.py
+```
 
 ### GMW
 

@@ -3,10 +3,14 @@ import gcot
 import pickle
 from random import randint
 from utils import *
+import time
 
 # client receives secrets from server
 def ottest1():
+    CONSTARTIME = time.time()
     s = connect()
+    CONENDTIME = time.time()
+    CONTIME = (CONENDTIME - CONSTARTIME)
     rounds = 0
     while(rounds < 5000):
         choice = randint(0,1)
@@ -15,6 +19,7 @@ def ottest1():
         rounds += 1
         print(res)
     #print(res)
+    return CONTIME
 """
 # cgarbl socket test
 def cgarbtesta():
@@ -82,7 +87,10 @@ def multiintest():
     #print(gcinfo)
 
     # need to serialize gc and send to bob
+    CONSTARTIME = time.time()
     s = connect()
+    CONENDTIME = time.time()
+    CONTIME = (CONENDTIME - CONSTARTIME)
     s.sendall(pickle.dumps(gcinfo)) # send all info to bob
 
     OTDone = False
@@ -107,8 +115,12 @@ def multiintest():
     msg = s.recv(4)
     result = int.from_bytes(msg, 'big')
     print("RESULT:", result)
+    return CONTIME
 
 if(__name__ == "__main__"):
     #ttest1()
+    totalcon = 0.0
     for i in range(1000):
-        multiintest()
+        totalcon += multiintest()
+    
+    print("AVG connection time:", (totalcon / 1000))
