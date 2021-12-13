@@ -27,7 +27,7 @@ def Alice_GMW(inputs):
     s.listen(5)
     while True:
         client,addr = s.accept()
-        res = GMW_Sender(inputs,client,CIR)
+        res = GMW_Sender(inputs,client)
         client.close()
         return res
         #print(res)

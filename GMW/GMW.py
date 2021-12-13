@@ -53,7 +53,7 @@ def GMW_Reveiver(inputs,skt):# Bob
         return res
     else:
         return -1
-def GMW_Sender(inputs,skt,cir="./Gequal.json"):# Alice
+def GMW_Sender(inputs,skt,cir=None):# Alice
     # B- exchange
     A1,B1 = GMW_SPLITER(inputs)
     skt.send(b"n132-GMW")
@@ -61,6 +61,7 @@ def GMW_Sender(inputs,skt,cir="./Gequal.json"):# Alice
     skt.send(json.dumps(B1).encode())
     #------ Alice's shares: A1 A2
     # send the circuit
+    cir = cir or CIR
     with open(cir) as f:
         circuit = f.read()
     skt.send(circuit.encode())

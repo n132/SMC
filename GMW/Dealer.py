@@ -54,6 +54,7 @@ def dealer():
             "result": pool[-1],
             "id": -1
         }
+        print(pool)
         GMWA.send(json.dumps(res).encode())
         GMWB.send(json.dumps(res).encode())
         GMWA.close()
