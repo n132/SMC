@@ -62,7 +62,9 @@ Cyclic Group: [CyclicGroup](./Yao/utils.py)
 
 ## Reference
 
-- Lecture 10 slides 
+- Lecture 10 slides by Giovanni Di Crescenzo, Ph.D.
+
+- Oblivious Transfer (https://crypto.stanford.edu/pbc/notes/crypto/ot.html)
 
 - Secure Multiparty Computation and Secret Sharing (https://www.cambridge.org/core/books/secure-multiparty-computation-and-secret-sharing/4C2480B202905CE5370B2609F0C2A67A)
 
@@ -77,5 +79,3 @@ Cyclic Group: [CyclicGroup](./Yao/utils.py)
 - Financial Cryptographyand Data Security (https://link.springer.com/content/pdf/10.1007%2F978-3-642-39884-1.pdf)
 
 - Cyclic Group (https://github.com/ojroques/garbled-circuit)
-
-- Oblivious Transfer (https://crypto.stanford.edu/pbc/notes/crypto/ot.html)
