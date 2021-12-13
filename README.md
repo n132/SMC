@@ -62,7 +62,7 @@ Cyclic Group: [CyclicGroup](./Yao/utils.py)
 
 ## Reference
 
-- Lecture 10 slides by Giovanni Di Crescenzo, Ph.D.
+- Lecture 10 slides from Giovanni Di Crescenzo, Ph.D.
 
 - Oblivious Transfer (https://crypto.stanford.edu/pbc/notes/crypto/ot.html)
 
