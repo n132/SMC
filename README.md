@@ -65,8 +65,32 @@ python Bob.py [0,1,1,0,1,1,1,0]
     - Alice, Bob and Dealer build socket connect with each other
     - Alice and Bob perform Secret Sharing to share their inputs with each other
 - Evaluation
-    - Dealer sends requests to Alice and Bob to get necessary data
     - Dealer evaluates the circuits 
+    - Dealer sends requests to Alice and Bob to get necessary data
+      - If the gate is NOT
+        - If dealer has the data, just do it locally
+        - If not, broadcase a requestion about the gate
+          - after get the broadcast, Alice and Bob perform caculation locally and store the data lcoally.
+      - If the gate is XOR
+        - If Dealer has the all the inputs locally, just do it locally.
+        - If not, broadcase a requestion about the gate
+          - Alice could find both shares of the input wires locally, send the share1 xor share2 to dealer(so dealer can't know the input)
+          - Bob does the same thing
+          - Dealer could use the data got from previous 2 steps to perform computation
+      - If the gate is AND
+        - If Dealer has the all the inputs locally, just do it locally.
+        - If not, broadcase a requestion about the gate
+          - Alice and Bob would check the local inputs, and perform 1 in 4 OT
+            - Alice plays the sender
+            - Bob plays the sender
+          - Alice send mask to the Dealer, Bob send the data he got to the dealer (AKA message xor mask)
+          - Dealer got the result and store it locally
+      - One thing I did not do / to do
+        - If one input is from Alice and the other is stored in dealer, such as the figure in Presentation Page 10
+          - Because Alice doesn't want to leak her inputs, this situation is tricky
+          - My solution is transfer the model 1 to model 2, they are equal!
+          - That's solution needs I write a circuit compiler, due to the limit time, I just assume all the people who provide the circuit is samrt enough and tansfered Model 1 to Model 2
+      - So far, dealer could process all the situations!
     - Alice and Bob get the final result from Dealer
 
 ## Details
